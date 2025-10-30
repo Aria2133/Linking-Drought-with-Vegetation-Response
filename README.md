@@ -4,18 +4,15 @@
 
 ## 📋 Overview
 
-This repository contains the complete analysis pipeline for investigating the relationships between drought conditions and vegetation responses across different land cover types in California. The study integrates multiple climate and vegetation indices to understand drought impacts, vegetation resilience, and recovery patterns.
+This repository contains the complete analysis pipeline for investigating the relationships between drought conditions and vegetation responses across different land cover types in California. The study integrates multiple climate and vegetation indices to understand drought impacts, vegetation resilience, and recovery patterns using both traditional statistical methods and deep learning approaches.
 
 ## 🔬 Research Objectives
 
 - Quantify the relationship between drought indices and vegetation productivity
+- Develop deep learning models for drought forecasting
 - Identify optimal lag times between drought onset and vegetation response
 - Assess vegetation resilience and recovery across different ecosystems
-- Compare drought sensitivity among California's major land cover types:
-  - Grasslands
-  - Natural Forests
-  - Savannas
-  - Shrublands
+- Compare drought sensitivity among California's major land cover types
 
 ## 📊 Data Sources & Indices
 
@@ -36,171 +33,126 @@ This repository contains the complete analysis pipeline for investigating the re
 ## 🛠️ Methodology
 
 ### Data Processing Pipeline
-1. **Spatial Preprocessing**
-   - Clipping to California state boundary
-   - Masking agricultural/cropland areas
-   - Resampling to common spatial resolution
-   - Aligning temporal dimensions
+1. **Google Earth Engine Processing**
+   - Satellite data acquisition (MODIS, Landsat, GRACE)
+   - Cloud masking and quality control
+   - Temporal aggregation (monthly means)
+   - Spatial resampling (250m to 5km)
+   - Export to GeoTIFF format
 
-2. **Temporal Analysis**
+2. **Python Analysis Pipeline**
+   - Spatial preprocessing and cropland masking
    - Deseasonalization using monthly climatology
    - Detrending using Singular Spectrum Analysis (SSA)
-   - Monthly and yearly aggregation
-   - Anomaly calculation (z-scores)
-
-3. **Statistical Analysis**
    - Cross-correlation analysis with multiple lag times
-   - Optimal lag identification
-   - Spatial correlation mapping
-   - Time series decomposition
+   - Statistical analysis and time series decomposition
+
+3. **Deep Learning Models**
+   - LSTM/GRU networks for drought forecasting
+   - Multi-sensor feature integration
+   - Temporal sequence prediction
+   - Model validation and performance assessment
 
 4. **Drought Impact Assessment**
-   - **Resilience**: Vegetation's ability to resist drought impacts
-   - **Recovery**: Time and completeness of vegetation recovery post-drought
+   - Resilience metrics
+   - Recovery time analysis
    - Land cover-specific response characterization
 
-## 📁 Repository Structure
+## 📁 Repository Contents
 
-```
-├── basic_drought_analysis/          # Initial exploratory analysis
-├── drought_correlation_results/     # Correlation outputs
-├── optimal_lag_results/             # Lag analysis results
-├── results/                         # Final figures and data
-│
-├── Data Processing Scripts:
-│   ├── California Drought Indices.py           # Main drought index processing
-│   ├── California Drought Indices (Yearly).py  # Yearly aggregation
-│   ├── CA MASKED 2.py                         # Cropland masking
-│   ├── CA detrend yearly.py                    # SSA detrending
-│   └── Without Crop Deseaonalized.py          # Deseasonalization
-│
-├── Vegetation Processing:
-│   ├── CALIFORNIA GOSIF.py         # GOSIF processing
-│   ├── FIXING GOSIF THE WORKING ONE.py
-│   ├── GPP NetCDF.py              # GPP processing
-│   ├── NIRv Deseasonalized.py     # NIRv processing
-│   └── GNDVI LAND TYPES.py        # GNDVI by land type
-│
-├── Spatial Analysis:
-│   ├── Clipping Code First Try.py  # Spatial clipping
-│   ├── Clipping GRACE.py          # GRACE data processing
-│   ├── Resize SPEI.py             # Resolution matching
-│   └── GEE Upload.py              # Google Earth Engine integration
-│
-├── Time Series Analysis:
-│   ├── SSA Indices.py             # Singular Spectrum Analysis
-│   ├── CA DRought SSA.py          # SSA for drought indices
-│   └── Tonzi Visualization for Drought Indices (SSA).py
-│
-├── Correlation Analysis:
-│   ├── Corrolation Heatmaps.py    # Cross-correlation analysis
-│   ├── Inter index correlation.py  # Inter-index relationships
-│   └── CA DECROPPED COORELATION HEATMAP.py
-│
-├── Land Cover Specific:
-│   ├── California Grasslands.py
-│   ├── California Natural Forests.py
-│   ├── California SAVANNA.py
-│   └── California Shrublands.py
-│
-├── Resilience & Recovery:
-│   ├── Res and Rec.py             # Main resilience/recovery analysis
-│   ├── Res and Rec 2.py
-│   └── CHAT CODE FOR RECOVERY AND RESILIENT.py
-│
-└── Visualization:
-    ├── 9 Indices Heatmaps.py
-    ├── 9 Indices Visualizing.py
-    ├── Drought Visualization 1.py
-    ├── Multi‑panel time‑series VISUALIZATION.py
-    └── Various index-specific visualization scripts
-```
+### Google Earth Engine Scripts (`gee_scripts/`)
+JavaScript code for satellite data processing:
+- MODIS vegetation indices (NDVI, NIRv, EVI, GNDVI)
+- Land surface temperature extraction
+- GRACE water storage processing
+- Climate indices (SPEI, VPD)
+- Multiple spatial resolutions (250m, 500m, 1km, 5km)
+- Agricultural area masking
+
+### Python Scripts
+- Data preprocessing and spatial analysis
+- Statistical analysis (correlation, SSA, time series)
+- Resilience and recovery metrics
+- Visualization and mapping
+- Land cover-specific analysis (Grasslands, Forests, Savannas, Shrublands)
+
+### Deep Learning Models
+- Drought forecasting neural networks
+- Feature engineering and data preparation
+- Model training and validation
+- Performance evaluation
+
+### Results
+- Correlation heatmaps and spatial maps
+- Time series visualizations
+- Statistical outputs and data tables
+- Publication-quality figures
 
 ## 🔧 Requirements
 
 ### Python Environment
 ```python
 # Core Scientific Computing
-numpy
-pandas
-scipy
-xarray
-netCDF4
+numpy, pandas, scipy, xarray, netCDF4
 
 # Geospatial
-rasterio
-geopandas
-shapely
-pyproj
-earthengine-api
+rasterio, geopandas, shapely, pyproj, earthengine-api
 
 # Analysis
-scikit-learn
-statsmodels
+scikit-learn, statsmodels
+
+# Deep Learning
+tensorflow, keras
 
 # Visualization
-matplotlib
-seaborn
-cartopy
+matplotlib, seaborn, cartopy
 ```
 
 ### Installation
 ```bash
-# Create conda environment
-conda create -n drought_analysis python=3.9
-conda activate drought_analysis
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
 ## 🚀 Usage
 
-### Quick Start
-```python
-# Example: Process California drought indices
-python "California Drought Indices.py"
+### Google Earth Engine Workflow
+1. Open scripts from `gee_scripts/` in GEE Code Editor
+2. Modify parameters (dates, region, resolution)
+3. Run scripts and export to Google Drive
+4. Download processed GeoTIFF files
 
-# Generate correlation heatmaps
-python "Corrolation Heatmaps.py"
+### Python Analysis Workflow
+1. Load exported GeoTIFF data
+2. Run preprocessing scripts
+3. Execute statistical analysis
+4. Generate visualizations
+5. Train deep learning models
 
-# Run resilience/recovery analysis
-python "Res and Rec.py"
-```
+## 📈 Key Features
 
-### Workflow
-1. **Data Preparation**: Run spatial clipping and masking scripts
-2. **Preprocessing**: Apply deseasonalization and detrending
-3. **Analysis**: Execute correlation and lag analysis
-4. **Visualization**: Generate figures using visualization scripts
-
-## 📈 Key Findings
-
-*[To be added after publication]*
-
-The study reveals:
-- Spatial and temporal patterns of drought-vegetation relationships across California
-- Ecosystem-specific response times to drought conditions
-- Differential resilience and recovery patterns among land cover types
-- Critical thresholds and lag times for vegetation responses
-
+- Multi-sensor integration (MODIS, GRACE, OCO-2, Landsat)
+- 20+ years of time series analysis (2001-2024)
+- State-wide spatial coverage (~424,000 km²)
+- Ecosystem-specific analysis (4 land cover types)
+- Traditional statistics + deep learning approaches
+- Reproducible research workflow
 
 ## 📧 Contact
 
-For questions about this research, please contact:
-- **Author**: Aria Ahmadi
-- **Email**: Ariaahmadi2155@gmail.com
-- **Institution**: University of Tehran
+**Author:** Aria Ahmadi  
+**Email:** Ariaahmadi2155@gmail.com  
+**Institution:** University of Tehran  
+**Department:** Water Resources Management
 
 ## ⚠️ Data Availability
 
-Raw data used in this analysis is available from:
+Raw data sources:
 - **SPEI**: [SPEIbase](http://spei.csic.es/database.html)
 - **GRACE/TWS**: [NASA JPL](https://grace.jpl.nasa.gov/)
 - **MODIS**: [NASA EARTHDATA](https://earthdata.nasa.gov/)
 - **GOSIF**: [Global Ecology Group](http://globalecology.unh.edu/)
 
-Processed datasets and complete results will be made available upon publication.
+Processed datasets will be made available upon publication.
 
 ## 🔒 License
 
@@ -208,18 +160,225 @@ Processed datasets and complete results will be made available upon publication.
 
 This code is provided for review purposes. Redistribution or use for academic research requires permission from the author until publication. After publication, this repository will be released under the MIT License.
 
----
-
 ## 🔄 Status
 
 - [x] Data collection and preprocessing
-- [x] Analysis pipeline development
-- [x] Statistical analysis
-- [x] Visualization
-- [ ] Paper under revision
+- [x] Statistical analysis pipeline
+- [x] Deep learning model development
+- [x] Visualization and results
+- [ ] Paper under final revision
 - [ ] Submitted for peer review
 - [ ] Published
 
 ---
 
-**Last Updated**: October 2025
+**Related Publication:** "A Multi-Sensor Remote Sensing Framework for Drought Forecasting and Vegetation Resilience Assessment in California Based on Deep Learning" (In preparation)
+
+**Last Updated:** October 2025
+```
+
+---
+
+## **FILE 2: LICENSE**
+
+**How to add:**
+1. Click "Add file" → "Create new file"
+2. Type filename: `LICENSE`
+3. Copy ALL the text below and paste it
+4. Commit message: "Add license"
+5. Click "Commit new file"
+
+**Text to copy:**
+```
+Copyright and License Notice
+
+Copyright © 2025 Aria Ahmadi. All Rights Reserved.
+
+Terms of Use (Pre-Publication)
+
+This repository contains research code for an academic publication currently under review.
+
+Restrictions:
+
+1. No Redistribution: You may not copy, modify, distribute, or create derivative works from this code without explicit written permission from the copyright holder.
+
+2. Academic Use Only: This code is shared for review and evaluation purposes only (e.g., for job applications, academic review).
+
+3. No Commercial Use: Commercial use of this code or methodology is strictly prohibited without written permission.
+
+4. Citation Required: If you reference this work in any academic context, proper attribution must be given.
+
+Future License:
+
+Upon publication of the associated research paper, this repository will be released under the MIT License, allowing free use with attribution.
+
+Contact:
+
+For permissions or inquiries:
+- Email: Ariaahmadi2155@gmail.com
+- Institution: University of Tehran
+
+Disclaimer:
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
+
+Note: This license will be updated to MIT License following publication of the associated research article.
+
+Date: October 2025
+```
+
+---
+
+## **FILE 3: requirements.txt**
+
+**How to add:**
+1. Click "Add file" → "Create new file"
+2. Type filename: `requirements.txt`
+3. Copy ALL the text below and paste it
+4. Commit message: "Add requirements"
+5. Click "Commit new file"
+
+**Text to copy:**
+```
+# Core Scientific Computing
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# Geospatial Data Processing
+xarray>=0.19.0
+netCDF4>=1.5.7
+rasterio>=1.2.0
+geopandas>=0.9.0
+shapely>=1.7.0
+pyproj>=3.0.0
+fiona>=1.8.0
+
+# Google Earth Engine
+earthengine-api>=0.1.0
+
+# Statistical Analysis
+scikit-learn>=0.24.0
+statsmodels>=0.12.0
+
+# Deep Learning
+tensorflow>=2.8.0
+keras>=2.8.0
+
+# Visualization
+matplotlib>=3.4.0
+seaborn>=0.11.0
+cartopy>=0.19.0
+plotly>=5.0.0
+
+# Data I/O
+openpyxl>=3.0.0
+h5py>=3.0.0
+
+# Utilities
+tqdm>=4.60.0
+python-dateutil>=2.8.0
+```
+
+---
+
+## **FILE 4: .gitignore**
+
+**How to add:**
+1. Click "Add file" → "Create new file"
+2. Type filename: `.gitignore` **(DON'T FORGET THE DOT!)**
+3. Copy ALL the text below and paste it
+4. Commit message: "Add gitignore"
+5. Click "Commit new file"
+
+**Text to copy:**
+```
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Data Files
+*.nc
+*.tif
+*.tiff
+*.hdf
+*.h5
+
+# Temporary Files
+*.tmp
+*.bak
+*.log
+temp/
+tmp/
+
+# Credentials
+*.json
+.env
+credentials/
+```
+
+---
+
+## ✅ **THAT'S IT! JUST THESE 4 FILES!**
+
+**Time: 20 minutes total**
+
+After adding all 4 files, you're **100% READY** to contact Dr. Lee!
+
+---
+
+## 🎯 **THEN DO THIS:**
+
+### **1. Fill out Google Form** (10 minutes)
+
+### **2. Email Dr. Lee** (Copy this):
+```
+Subject: Re: Prospective PhD Student - Remote Sensing & Climate Hazards (Fall 2026)
+
+Dear Dr. Lee,
+
+Thank you for your prompt response. I have submitted my application through the Google Form as requested.
+
+I wanted to share my GitHub repository containing the complete analysis pipeline for my thesis work on drought-vegetation relationships in California:
+
+https://github.com/Aria2133/Linking-Drought-with-Vegetation-Response
+
+The repository demonstrates technical skills directly relevant to your lab:
+- Multi-source satellite data processing (MODIS, GRACE, OCO-2)
+- Google Earth Engine and Python integration
+- Deep learning for drought forecasting
+- Statistical time series analysis
+- Comprehensive documentation
+
+The repository is currently private as the manuscript is under final revision. I would be happy to grant you access if helpful for evaluating my application.
+
+Thank you for considering my application.
+
+Best regards,
+
+Aria Ahmadi
+M.Sc. Candidate, Water Resources Management
+University of Tehran
+Email: Ariaahmadi2155@gmail.com
+GitHub: https://github.com/Aria2133
