@@ -184,26 +184,13 @@ The study reveals:
 - Differential resilience and recovery patterns among land cover types
 - Critical thresholds and lag times for vegetation responses
 
-## 📝 Citation
-
-*[To be added after publication]*
-
-```bibtex
-@article{YourName2025,
-  title={Linking Drought Conditions with Vegetation Response in California},
-  author={Your Name},
-  journal={Journal Name},
-  year={2025},
-  note={In preparation}
-}
-```
 
 ## 📧 Contact
 
 For questions about this research, please contact:
-- **Author**: [Your Name]
-- **Email**: [Your Email]
-- **Institution**: [Your Institution]
+- **Author**: Aria Ahmadi
+- **Email**: Ariaahmadi2155@gmail.com
+- **Institution**: University of Tehran
 
 ## ⚠️ Data Availability
 
@@ -217,7 +204,7 @@ Processed datasets and complete results will be made available upon publication.
 
 ## 🔒 License
 
-**Copyright © 2025 [Your Name]. All Rights Reserved.**
+**Copyright © 2025 Aria Ahmadi. All Rights Reserved.**
 
 This code is provided for review purposes. Redistribution or use for academic research requires permission from the author until publication. After publication, this repository will be released under the MIT License.
 
