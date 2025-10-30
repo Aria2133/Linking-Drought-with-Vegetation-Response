@@ -1,153 +1,118 @@
 # Google Earth Engine Scripts
-   
-   This folder contains my Google Earth Engine code for processing satellite data.
-```
-5. Scroll down
-6. Commit message: `Create GEE scripts folder`
-7. Click **"Commit new file"**
 
-**Now you have a folder!** ✅
-
-#### 2.3 Upload Your .js Files
-1. Click on the **"gee_scripts"** folder you just created
-2. Click **"Add file"** → **"Upload files"**
-3. **Drag and drop** your .js files from your computer
-   - Or click "choose your files" and select them
-4. All your files will show up in the list
-5. Scroll down
-6. Commit message: `Add GEE scripts`
-7. Click **"Commit changes"**
-
-**DONE!** Your GEE code is now on GitHub! 🎉
+This directory contains JavaScript code for satellite data processing using Google Earth Engine. These scripts support drought and vegetation analysis in California by acquiring, processing, and exporting multi-year time series data.
 
 ---
 
-## 📸 **VISUAL GUIDE**
+## 📋 Overview
 
-### What You're Doing:
-```
-STEP 1: GET CODE FROM GEE
-┌─────────────────────────┐
-│  Google Earth Engine    │
-│  (your scripts)         │
-└───────────┬─────────────┘
-            │ Copy & Paste
-            ▼
-┌─────────────────────────┐
-│  Notepad                │
-│  (save as .js files)    │
-└───────────┬─────────────┘
-            │
-            ▼
-┌─────────────────────────┐
-│  Your Computer          │
-│  (Desktop/Downloads)    │
-└─────────────────────────┘
+These scripts process satellite imagery and climate data from multiple sources (MODIS, GRACE, ERA5) to create standardized datasets for drought-vegetation analysis. All data is:
+- Clipped to California state boundary
+- Resampled to consistent spatial resolution (500m-5km)
+- Aggregated to monthly temporal resolution
+- Exported as GeoTIFF files for Python analysis
 
-STEP 2: UPLOAD TO GITHUB
-┌─────────────────────────┐
-│  Your Computer          │
-│  (.js files)            │
-└───────────┬─────────────┘
-            │ Upload
-            ▼
-┌─────────────────────────┐
-│  GitHub Repository      │
-│  (in gee_scripts folder)│
-└─────────────────────────┘
-```
+**Key Features:**
+- Automated monthly/yearly processing loops
+- Agricultural area masking for natural vegetation analysis
+- Multiple spatial resolutions for different analyses
+- Site-specific data extraction for validation
+- Quality control and cloud masking
 
 ---
 
-## 💡 **EXAMPLE**
+## 📁 Script Inventory
 
-Let's say you have a GEE script called "MODIS Download"
+### 🌍 **Study Area & Land Cover**
 
-**What you do:**
+#### `4_types_land`
+**Purpose:** Extracts and processes California's four major natural land cover types
+- Grasslands
+- Natural Forests  
+- Savannas
+- Shrublands
 
-1. **In GEE Code Editor:**
-   - Click on "MODIS Download"
-   - Select all (Ctrl+A)
-   - Copy (Ctrl+C)
+**Output:** Land cover masks for ecosystem-specific analysis
 
-2. **In Notepad:**
-   - Paste (Ctrl+V)
-   - File → Save As
-   - Save as: `modis_download.js`
-   - Save to Desktop
+#### `CROPLAND`
+**Purpose:** Identifies agricultural/cropland areas for exclusion from natural vegetation analysis
+**Data Source:** USDA Cropland Data Layer
+**Output:** Binary cropland mask
 
-3. **In GitHub:**
-   - Go to your repository
-   - Create folder: `gee_scripts/`
-   - Upload `modis_download.js`
-   - Done!
-
----
-
-## 🎯 **QUICK CHECKLIST**
-
-Do this for each GEE script:
-
-- [ ] Open script in GEE Code Editor
-- [ ] Copy all code (Ctrl+A, Ctrl+C)
-- [ ] Paste in Notepad
-- [ ] Save as `.js` file
-- [ ] Upload to GitHub in `gee_scripts/` folder
+#### `HUC-8`
+**Purpose:** Defines watershed boundaries using Hydrologic Unit Code (HUC-8) regions
+**Use Case:** Regional drought analysis and water resource assessment
 
 ---
 
-## ⚠️ **IMPORTANT TIPS**
+### 🌡️ **Climate & Drought Indices**
 
-1. **File names must end with `.js`**
-   - ✅ Good: `modis_data.js`
-   - ❌ Bad: `modis_data.txt`
-   - ❌ Bad: `modis_data`
+#### **Land Surface Temperature (LST)**
 
-2. **When saving in Notepad:**
-   - Change "Save as type" to **"All Files"**
-   - Otherwise it adds `.txt` at the end
+**`LST`**
+- **Product:** MODIS MOD11A2 (8-day, 1km)
+- **Processing:** Monthly mean temperature
+- **Output:** Statewide LST time series
+- **Resolution:** 1km native
 
-3. **Use simple names:**
-   - ✅ Good: `download_modis.js`
-   - ✅ Good: `calculate_ndvi.js`
-   - ❌ Avoid spaces or weird characters
+**`California_LST_NO_AG`**
+- Same as LST but with agricultural areas masked out
+- Focuses on natural vegetation temperature response
 
----
+**`LST_timelaps`**
+- Creates temporal visualization of LST changes
+- Useful for drought event identification
 
-## 🚀 **HOW LONG DOES THIS TAKE?**
-
-- **If you have 5 scripts:** About 15 minutes total
-- **If you have 10 scripts:** About 25 minutes total
-
-**It's quick!**
+**`Tonzi_LST`**
+- Site-specific LST extraction for Tonzi Ranch AmeriFlux site
+- Used for ground-truthing and validation
 
 ---
 
-## ❓ **COMMON QUESTIONS**
+#### **Drought Indices**
 
-**Q: Do I need to download any software?**
-**A:** No! Just use Notepad (comes with Windows) and your web browser.
+**`SPEI`**
+- **Index:** Standardized Precipitation-Evapotranspiration Index
+- **Source:** SPEI Global Database
+- **Processing:** Monthly time series
+- **Output:** Multi-year SPEI values
 
-**Q: What if I make a mistake?**
-**A:** You can delete files on GitHub and re-upload. No problem!
+**`SPEI (2024)`**
+- Updated version with latest 2024 data
+- Includes recent drought events
 
-**Q: Do I need ALL my GEE scripts?**
-**A:** No! Just upload your main/important ones. 3-5 scripts is enough.
-
-**Q: What if my script is really long?**
-**A:** That's fine! Just copy-paste the whole thing.
+**`VPD`**
+- **Index:** Vapor Pressure Deficit
+- **Source:** ERA5 climate reanalysis
+- **Calculation:** From temperature and humidity
+- **Output:** Monthly VPD time series
 
 ---
 
-## ✅ **WHAT YOU'LL HAVE WHEN DONE**
-```
-Your GitHub Repository:
-│
-├── gee_scripts/                    ← NEW FOLDER
-│   ├── README.md                   ← Explains what's in here
-│   ├── download_modis.js           ← Your GEE script 1
-│   ├── calculate_ndvi.js           ← Your GEE script 2
-│   ├── cloud_mask.js               ← Your GEE script 3
-│   └── export_data.js              ← Your GEE script 4
-│
-└── [All your other files]
+#### **Water Storage**
+
+**`GRACE`**
+- **Product:** GRACE/GRACE-FO Total Water Storage (TWS)
+- **Resolution:** ~300km monthly
+- **Processing:** Resampled to 5km for integration with other datasets
+- **Output:** Monthly TWS anomalies
+
+**`GRACE_1`**
+- Alternative GRACE processing method
+- Different temporal filtering approach
+
+---
+
+### 🌿 **Vegetation Indices**
+
+#### **NDVI (Normalized Difference Vegetation Index)**
+
+**`NDVI`**
+- **Product:** MODIS MOD13Q1 (16-day, 250m)
+- **Processing:** Monthly mean NDVI
+- **Formula:** (NIR - Red) / (NIR + Red)
+- **Scale Factor:** 0.0001 applied
+- **Resolution:** 250m native
+
+**`NDVI-5km`**
+```javascript
