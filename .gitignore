@@ -1,0 +1,47 @@
+```
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Data Files
+*.nc
+*.tif
+*.tiff
+*.hdf
+*.h5
+
+# Temporary Files
+*.tmp
+*.bak
+*.log
+temp/
+tmp/
+
+# Credentials
+*.json
+.env
+credentials/
+```
+
+---
