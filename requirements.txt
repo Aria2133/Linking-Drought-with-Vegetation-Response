@@ -1,10 +1,6 @@
-```
-# Core Scientific Computing
 numpy>=1.21.0
 pandas>=1.3.0
 scipy>=1.7.0
-
-# Geospatial Data Processing
 xarray>=0.19.0
 netCDF4>=1.5.7
 rasterio>=1.2.0
@@ -12,89 +8,15 @@ geopandas>=0.9.0
 shapely>=1.7.0
 pyproj>=3.0.0
 fiona>=1.8.0
-
-# Google Earth Engine
 earthengine-api>=0.1.0
-
-# Statistical Analysis
 scikit-learn>=0.24.0
 statsmodels>=0.12.0
-
-# Deep Learning
 tensorflow>=2.8.0
-keras>=2.8.0
-
-# Visualization
 matplotlib>=3.4.0
 seaborn>=0.11.0
 cartopy>=0.19.0
 plotly>=5.0.0
-
-# Data I/O
 openpyxl>=3.0.0
 h5py>=3.0.0
-
-# Utilities
 tqdm>=4.60.0
 python-dateutil>=2.8.0
-```
-
----
-
-## **FILE 4: .gitignore**
-
-**How to add:**
-1. Click "Add file" → "Create new file"
-2. Type filename: `.gitignore` **(DON'T FORGET THE DOT!)**
-3. Copy ALL the text below and paste it
-4. Commit message: "Add gitignore"
-5. Click "Commit new file"
-
-**Text to copy:**
-```
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Virtual Environment
-venv/
-ENV/
-env/
-.venv
-
-# IDE
-.vscode/
-.idea/
-*.swp
-.DS_Store
-
-# Data Files
-*.nc
-*.tif
-*.tiff
-*.hdf
-*.h5
-
-# Temporary Files
-*.tmp
-*.bak
-*.log
-temp/
-tmp/
-
-# Credentials
-*.json
-.env
-credentials/
-```
-
----
