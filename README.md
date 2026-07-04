@@ -1,6 +1,9 @@
 # Linking Drought with Vegetation Response in California
 
-> **Note:** This repository contains research code for an upcoming publication. The paper is currently under final revision before submission.
+> **Major revision status:** This repository supports the major-revision response for
+> Ecological Informatics manuscript **ECOINF-D-26-00382**. Reproducible reviewer
+> response analyses are maintained in the companion `major_revision_analyses/`
+> pipeline on the project desktop.
 
 ## 📋 Overview
 
@@ -43,7 +46,8 @@ This repository contains the complete analysis pipeline for investigating the re
 2. **Python Analysis Pipeline**
    - Spatial preprocessing and cropland masking
    - Deseasonalization using monthly climatology
-   - Detrending using Singular Spectrum Analysis (SSA)
+   - Baseline-referenced deseasonalization
+   - Month-specific and SSA detrending sensitivity analyses
    - Cross-correlation analysis with multiple lag times
    - Statistical analysis and time series decomposition
 
@@ -166,13 +170,14 @@ This code is provided for review purposes. Redistribution or use for academic re
 - [x] Statistical analysis pipeline
 - [x] Deep learning model development
 - [x] Visualization and results
-- [ ] Paper under final revision
-- [ ] Submitted for peer review
+- [x] Submitted for peer review
+- [x] Major revision received (June 7, 2026)
+- [ ] Major revision resubmitted
 - [ ] Published
 
 ---
 
 **Related Publication:** "A Multi-Sensor Remote Sensing Framework for Drought Forecasting and Vegetation Resilience Assessment in California Based on Deep Learning" (In preparation)
 
-**Last Updated:** October 2025
+**Last Updated:** June 8, 2026
 ```

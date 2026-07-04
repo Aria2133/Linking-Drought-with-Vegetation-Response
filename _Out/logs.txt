@@ -1,0 +1,33 @@
+Starting pipeline (RAM-only, streaming raster means)…
+
+=== Collecting pixel means for land type: Grasslands ===
+[OK] Imputed Grasslands/LST: NaNs 25 → 0
+[OK] Imputed Grasslands/TWS: NaNs 58 → 0
+[OK] Saved cleaned monthly Excel: _Out\cleaned_timeseries_Grasslands.xlsx
+
+=== Collecting pixel means for land type: NaturalForests ===
+[OK] Imputed NaturalForests/LST: NaNs 25 → 0
+[OK] Imputed NaturalForests/TWS: NaNs 58 → 0
+[OK] Saved cleaned monthly Excel: _Out\cleaned_timeseries_NaturalForests.xlsx
+
+=== Collecting pixel means for land type: Savannas ===
+[OK] Imputed Savannas/LST: NaNs 25 → 0
+[OK] Imputed Savannas/TWS: NaNs 58 → 0
+[OK] Saved cleaned monthly Excel: _Out\cleaned_timeseries_Savannas.xlsx
+
+=== Collecting pixel means for land type: Shrublands ===
+[OK] Imputed Shrublands/LST: NaNs 25 → 0
+[OK] Imputed Shrublands/TWS: NaNs 58 → 0
+[OK] Saved cleaned monthly Excel: _Out\cleaned_timeseries_Shrublands.xlsx
+[OK] Saved VAR IRF: _Out\var_irf_Grasslands_GPP.png
+[OK] Saved VAR IRF: _Out\var_irf_Grasslands_GOSIF.png
+[OK] Saved VAR IRF: _Out\var_irf_NaturalForests_GPP.png
+[OK] Saved VAR IRF: _Out\var_irf_NaturalForests_GOSIF.png
+[OK] Saved VAR IRF: _Out\var_irf_Savannas_GPP.png
+[OK] Saved VAR IRF: _Out\var_irf_Savannas_GOSIF.png
+[OK] Saved VAR IRF: _Out\var_irf_Shrublands_GPP.png
+[OK] Saved VAR IRF: _Out\var_irf_Shrublands_GOSIF.png
+[OK] Saved Cross-Correlation Function plot: _Out\cross_correlation_function_GPP.png
+[OK] Saved Cross-Correlation Function plot: _Out\cross_correlation_function_GOSIF.png
+
+All done. See the _Out folder for results and logs.
