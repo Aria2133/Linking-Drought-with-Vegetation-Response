@@ -1,183 +1,85 @@
-# Linking Drought with Vegetation Response in California
+# Integrating Multi-Sensor Earth Observation and Deep Learning for Drought Forecasting and Vegetation Response in California
 
-> **Major revision status:** This repository supports the major-revision response for
-> Ecological Informatics manuscript **ECOINF-D-26-00382**. Reproducible reviewer
-> response analyses are maintained in the companion `major_revision_analyses/`
-> pipeline on the project desktop.
+Code for a study of drought forcing and vegetation response across California's grasslands, natural forests, savannas and
+shrublands (2001–2024). Monthly satellite and climate records are summarised per land type to (i) describe drought forcing with
+an equal-weight forcing composite (EWBI) and vegetation response with NIRv, and (ii) benchmark one-month-ahead forecasting of
+nine indicators with deep-learning, tree-based and simple baseline models. *Manuscript under revision at Ecological Informatics.*
 
-## 📋 Overview
+```mermaid
+flowchart LR
+    A[Public EO & climate datasets] --> B[Google Earth Engine<br/>monthly exports]
+    B --> C[Python: land-type masking<br/>& monthly land-type series]
 
-This repository contains the complete analysis pipeline for investigating the relationships between drought conditions and vegetation responses across different land cover types in California. The study integrates multiple climate and vegetation indices to understand drought impacts, vegetation resilience, and recovery patterns using both traditional statistical methods and deep learning approaches.
+    C --> D[Ecological analyses]
+    D --> D1[EWBI forcing composite]
+    D --> D2[NIRv drought response<br/>& severe-response area]
+    D --> D3[Correlation & lag analysis]
+    D --> D4[Descriptive forcing–response<br/>state transitions]
 
-## 🔬 Research Objectives
-
-- Quantify the relationship between drought indices and vegetation productivity
-- Develop deep learning models for drought forecasting
-- Identify optimal lag times between drought onset and vegetation response
-- Assess vegetation resilience and recovery across different ecosystems
-- Compare drought sensitivity among California's major land cover types
-
-## 📊 Data Sources & Indices
-
-### Drought/Climate Indices
-- **SPEI** - Standardized Precipitation-Evapotranspiration Index
-- **TWS** - Total Water Storage (GRACE satellite)
-- **LST** - Land Surface Temperature (MODIS)
-- **VPD** - Vapor Pressure Deficit
-
-### Vegetation Indices
-- **GOSIF** - Global OCO-2 Solar-Induced Fluorescence
-- **GPP** - Gross Primary Productivity
-- **NDVI** - Normalized Difference Vegetation Index
-- **NIRv** - Near-Infrared Reflectance of Vegetation
-- **GNDVI** - Green Normalized Difference Vegetation Index
-- **EVI** - Enhanced Vegetation Index
-
-## 🛠️ Methodology
-
-### Data Processing Pipeline
-1. **Google Earth Engine Processing**
-   - Satellite data acquisition (MODIS, Landsat, GRACE)
-   - Cloud masking and quality control
-   - Temporal aggregation (monthly means)
-   - Spatial resampling (250m to 5km)
-   - Export to GeoTIFF format
-
-2. **Python Analysis Pipeline**
-   - Spatial preprocessing and cropland masking
-   - Deseasonalization using monthly climatology
-   - Baseline-referenced deseasonalization
-   - Month-specific and SSA detrending sensitivity analyses
-   - Cross-correlation analysis with multiple lag times
-   - Statistical analysis and time series decomposition
-
-3. **Deep Learning Models**
-   - LSTM/GRU networks for drought forecasting
-   - Multi-sensor feature integration
-   - Temporal sequence prediction
-   - Model validation and performance assessment
-
-4. **Drought Impact Assessment**
-   - Resilience metrics
-   - Recovery time analysis
-   - Land cover-specific response characterization
-
-## 📁 Repository Contents
-
-### Google Earth Engine Scripts (`gee_scripts/`)
-JavaScript code for satellite data processing:
-- MODIS vegetation indices (NDVI, NIRv, EVI, GNDVI)
-- Land surface temperature extraction
-- GRACE water storage processing
-- Climate indices (SPEI, VPD)
-- Multiple spatial resolutions (250m, 500m, 1km, 5km)
-- Agricultural area masking
-
-### Python Scripts
-- Data preprocessing and spatial analysis
-- Statistical analysis (correlation, SSA, time series)
-- Resilience and recovery metrics
-- Visualization and mapping
-- Land cover-specific analysis (Grasslands, Forests, Savannas, Shrublands)
-
-### Deep Learning Models
-- Drought forecasting neural networks
-- Feature engineering and data preparation
-- Model training and validation
-- Performance evaluation
-
-### Results
-- Correlation heatmaps and spatial maps
-- Time series visualizations
-- Statistical outputs and data tables
-- Publication-quality figures
-
-## 🔧 Requirements
-
-### Python Environment
-```python
-# Core Scientific Computing
-numpy, pandas, scipy, xarray, netCDF4
-
-# Geospatial
-rasterio, geopandas, shapely, pyproj, earthengine-api
-
-# Analysis
-scikit-learn, statsmodels
-
-# Deep Learning
-tensorflow, keras
-
-# Visualization
-matplotlib, seaborn, cartopy
+    C --> E[Target-specific forecasting]
+    E --> E1[12-month history of the target]
+    E1 --> E2[1-month-ahead prediction]
+    E2 --> E3[LSTM / BiLSTM / TCN / N-BEATS / N-HiTS / XGBoost<br/>+ RBF-ε-SVR + 3 baselines]
+    E3 --> F[4 expanding rolling-origin test windows]
+    F --> G[Paired model comparison<br/>over 36 tasks]
 ```
 
-### Installation
+## At a glance
+
+| | |
+|---|---|
+| **Region / period** | California, monthly, 2001–2024 (baseline 2001–2011; drought periods 2012–2016 and 2020–2024) |
+| **Land types** | Grasslands, Natural Forests, Savannas, Shrublands (MODIS MCD12Q1 2021) |
+| **Vegetation / productivity** | NDVI, GNDVI, NIRv, GOSIF/SIF, GPP |
+| **Hydroclimate / thermal** | SPEI-1, GRACE/GRACE-FO TWS, VPDmax, LST |
+| **EWBI** | mean of +SPEI-1, +TWS, −VPDmax, −LST, each standardised over time against its 2001–2011 land-type baseline; a relative forcing composite, not a calibrated drought-intensity index |
+| **Forecasting** | univariate per target (9 targets × 4 land types = 36 tasks); 12-month input window; 1 month ahead |
+| **Evaluation** | expanding rolling origin, test windows 2017–18, 2019–20, 2021–22, 2023–24; R² and nRMSE |
+| **Pixels** | per task, pixels with ≥ 30 % valid months before 2022 and in 2024; at most 100 drawn at random (seed 42), reused across models and folds |
+
+## Repository map
+
+| Folder | Contents |
+|---|---|
+| [`gee/`](gee) | Google Earth Engine (JavaScript) export scripts |
+| [`src/preprocessing/`](src/preprocessing) | Python: land-type masking, monthly land-type series, anomalies |
+| [`src/ecological/`](src/ecological) | EWBI, states and transitions, NIRv response, gap filling, correlations, sensitivity analyses |
+| [`src/forecasting/`](src/forecasting) | pixel screening, folds, baselines, models, SVR, corrected BiLSTM |
+| [`src/figures/`](src/figures), [`src/tables/`](src/tables) | figure and table scripts |
+| [`config/`](config) | hyperparameters, folds, seeds, pixel-selection rule and counts |
+| [`environment/`](environment) | pinned package versions |
+| [`data_access/`](data_access) | data sources and how to obtain them |
+| [`docs/`](docs) | [workflow](docs/WORKFLOW.md), [reproducibility](docs/REPRODUCIBILITY.md), [data availability](docs/DATA_AVAILABILITY.md), [file provenance](docs/FILE_PROVENANCE.md) |
+
+## Figures and tables
+
+| Item | Script |
+|---|---|
+| Fig. 1 land types | `src/figures/fig01_landtype_map.py` |
+| Fig. 2 workflow | diagram (not code-generated) |
+| Figs. 3–4 standardised anomalies | `src/figures/fig03_fig04_anomaly_timeseries.py` |
+| Figs. 5–6 correlations, cross-correlation | `src/preprocessing/02_landtype_series/03_previous_gndvi_series_and_figures_5_6.py`, `src/figures/fig06_cross_correlation.py` |
+| Fig. 7 forecast skill (polar) | `src/figures/fig07_render_corrected_polar.py` |
+| Fig. 8 NIRv change maps | `src/figures/fig08_nirv_change_maps.py` |
+| Fig. 9 state transitions | `src/figures/fig09_transition_matrices.py` |
+| Figs. S1–S10 | `src/figures/figS01_*.py` … `figS10_*.py` (S2–S5 in one script) |
+| Tables 3–4 model rankings / predictability | `src/tables/rebuild_corrected_tables_3_4.py` |
+| Hyperparameters, folds, pixel counts | `config/` |
+
+## Data
+
+No data are included. All source datasets are public ([`data_access/data_sources.csv`](data_access/data_sources.csv)).
+Processed and derived datasets are available from the corresponding author on reasonable request
+([`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md)).
+
+## Reproducing
+
 ```bash
-pip install -r requirements.txt
+pip install -r environment/requirements.txt
 ```
+Then follow [`docs/WORKFLOW.md`](docs/WORKFLOW.md). Scripts contain path placeholders (`<DATA_ROOT>`, `<PROJECT_ROOT>`) to set
+before running. Notes on configurations and known gaps: [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
 
-## 🚀 Usage
+## License
 
-### Google Earth Engine Workflow
-1. Open scripts from `gee_scripts/` in GEE Code Editor
-2. Modify parameters (dates, region, resolution)
-3. Run scripts and export to Google Drive
-4. Download processed GeoTIFF files
-
-### Python Analysis Workflow
-1. Load exported GeoTIFF data
-2. Run preprocessing scripts
-3. Execute statistical analysis
-4. Generate visualizations
-5. Train deep learning models
-
-## 📈 Key Features
-
-- Multi-sensor integration (MODIS, GRACE, OCO-2, Landsat)
-- 20+ years of time series analysis (2001-2024)
-- State-wide spatial coverage (~424,000 km²)
-- Ecosystem-specific analysis (4 land cover types)
-- Traditional statistics + deep learning approaches
-- Reproducible research workflow
-
-## 📧 Contact
-
-**Author:** Aria Ahmadi  
-**Email:** Ariaahmadi2155@gmail.com  
-**Institution:** University of Tehran  
-**Department:** Water Resources Management
-
-## ⚠️ Data Availability
-
-Raw data sources:
-- **SPEI**: [SPEIbase](http://spei.csic.es/database.html)
-- **GRACE/TWS**: [NASA JPL](https://grace.jpl.nasa.gov/)
-- **MODIS**: [NASA EARTHDATA](https://earthdata.nasa.gov/)
-- **GOSIF**: [Global Ecology Group](http://globalecology.unh.edu/)
-
-Processed datasets will be made available upon publication.
-
-## 🔒 License
-
-**Copyright © 2025 Aria Ahmadi. All Rights Reserved.**
-
-This code is provided for review purposes. Redistribution or use for academic research requires permission from the author until publication. After publication, this repository will be released under the MIT License.
-
-## 🔄 Status
-
-- [x] Data collection and preprocessing
-- [x] Statistical analysis pipeline
-- [x] Deep learning model development
-- [x] Visualization and results
-- [x] Submitted for peer review
-- [x] Major revision received (June 7, 2026)
-- [ ] Major revision resubmitted
-- [ ] Published
-
----
-
-**Related Publication:** "A Multi-Sensor Remote Sensing Framework for Drought Forecasting and Vegetation Resilience Assessment in California Based on Deep Learning" (In preparation)
-
-**Last Updated:** June 8, 2026
-```
+See [LICENSE](LICENSE).

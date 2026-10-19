@@ -1,0 +1,37 @@
+Target,Land type,Eligible pixels,Retained pixels,Retained fraction,100-pixel cap applied,Pre-2022 available months,Pre-2022 required finite months,2024 available months,2024 required finite months,Pre-2022 threshold,2024 threshold,Selection seed,Expected retained pixels,Retained count matches rule,Coordinates match final cache,Source branch
+GNDVI,Grasslands,5533,100,0.0180733779143321,Yes,252,75,12,3,30%,30%,42,100,True,True,accepted previous/no-QA GNDVI forecasting branch
+GNDVI,Natural Forests,2482,100,0.040290088638195,Yes,252,75,12,3,30%,30%,42,100,True,True,accepted previous/no-QA GNDVI forecasting branch
+GNDVI,Savannas,3804,100,0.0262881177707676,Yes,252,75,12,3,30%,30%,42,100,True,True,accepted previous/no-QA GNDVI forecasting branch
+GNDVI,Shrublands,2770,100,0.0361010830324909,Yes,252,75,12,3,30%,30%,42,100,True,True,accepted previous/no-QA GNDVI forecasting branch
+GOSIF/SIF,Grasslands,4438,100,0.0225326723749436,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GOSIF/SIF,Natural Forests,2067,100,0.0483792936623125,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GOSIF/SIF,Savannas,3027,100,0.0330360092500825,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GOSIF/SIF,Shrublands,2248,100,0.0444839857651245,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GPP,Grasslands,3374,100,0.0296384113811499,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GPP,Natural Forests,1584,100,0.0631313131313131,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GPP,Savannas,2094,100,0.0477554918815663,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+GPP,Shrublands,851,100,0.117508813160987,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+LST,Grasslands,4427,100,0.0225886604924328,Yes,227,68,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+LST,Natural Forests,1986,100,0.0503524672708962,Yes,227,68,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+LST,Savannas,3032,100,0.0329815303430079,Yes,227,68,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+LST,Shrublands,2247,100,0.0445037828215398,Yes,227,68,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NDVI,Grasslands,5533,100,0.0180733779143321,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NDVI,Natural Forests,2482,100,0.040290088638195,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NDVI,Savannas,3804,100,0.0262881177707676,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NDVI,Shrublands,2770,100,0.0361010830324909,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NIRv,Grasslands,5533,100,0.0180733779143321,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NIRv,Natural Forests,2482,100,0.040290088638195,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NIRv,Savannas,3804,100,0.0262881177707676,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+NIRv,Shrublands,2770,100,0.0361010830324909,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+SPEI-1,Grasslands,5530,100,0.0180831826401446,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+SPEI-1,Natural Forests,2482,100,0.040290088638195,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+SPEI-1,Savannas,3804,100,0.0262881177707676,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+SPEI-1,Shrublands,2770,100,0.0361010830324909,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+TWS,Grasslands,14,14,1.0,No,194,58,9,2,30%,30%,42,14,True,True,final raster full-candidate branch
+TWS,Natural Forests,5,5,1.0,No,194,58,9,2,30%,30%,42,5,True,True,final raster full-candidate branch
+TWS,Savannas,13,13,1.0,No,194,58,9,2,30%,30%,42,13,True,True,final raster full-candidate branch
+TWS,Shrublands,8,8,1.0,No,194,58,9,2,30%,30%,42,8,True,True,final raster full-candidate branch
+VPDmax,Grasslands,5530,100,0.0180831826401446,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+VPDmax,Natural Forests,2482,100,0.040290088638195,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+VPDmax,Savannas,3804,100,0.0262881177707676,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
+VPDmax,Shrublands,2770,100,0.0361010830324909,Yes,252,75,12,3,30%,30%,42,100,True,True,final raster full-candidate branch
