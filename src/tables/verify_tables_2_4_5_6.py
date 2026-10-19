@@ -16,9 +16,10 @@ from docx import Document
 OUT = Path(__file__).resolve().parent
 PAPER = OUT.parents[1]
 MANUSCRIPT = PAPER / "Paper Final Draft.docx"
-FIG7_SOURCE = PAPER / "AUDIT_TEMP" / "FIGURE_REFINEMENT_PHASE" / "source_tables" / "Figure_7_source.csv"
-FIG7_COUNTS = PAPER / "AUDIT_TEMP" / "FIGURE_REFINEMENT_PHASE" / "FIGURE7_ORIGINAL_DESIGN_RECREATION" / "Figure_7_original_design_corrected_best_model_counts.csv"
-FIG7_VERIFY = PAPER / "AUDIT_TEMP" / "FIGURE_REFINEMENT_PHASE" / "FIGURE7_ORIGINAL_DESIGN_RECREATION" / "Figure_7_original_design_corrected_numerical_verification.csv"
+# Final Figure 7 source and rendering (all 216 cells on the common 12-month benchmark).
+FIG7_SOURCE = PAPER / "AUDIT_TEMP" / "FIGURE7_TWS_COMMON_CORRECTION" / "source_tables" / "Figure_7_source.csv"
+FIG7_COUNTS = PAPER / "AUDIT_TEMP" / "FIGURE7_TWS_COMMON_CORRECTION" / "FIGURE7_RENDER" / "Figure_7_original_design_corrected_best_model_counts.csv"
+FIG7_VERIFY = PAPER / "AUDIT_TEMP" / "FIGURE7_TWS_COMMON_CORRECTION" / "FIGURE7_RENDER" / "Figure_7_original_design_corrected_numerical_verification.csv"
 HP_TABLE = PAPER / "Docs" / "major_revision_analyses" / "final_forecasting_hyperparameter_audit_20260728" / "Supplementary_Table_forecasting_hyperparameters.csv"
 HP_SENSITIVITY = PAPER / "Docs" / "major_revision_analyses" / "forecasting_hyperparameter_sensitivity_final" / "run_20260727_200736" / "06_tables" / "Supplementary_Table_hyperparameter_sensitivity.csv"
 BILSTM_UPDATE = PAPER / "Docs" / "major_revision_analyses" / "corrected_true_BiLSTM_rerun_20260728" / "08_downstream" / "corrected_BiLSTM_hyperparameter_table_update.csv"

@@ -40,10 +40,10 @@ flowchart LR
 | **Pixels** | per task, minimum finite-month counts of floor(0.30 × N) before 2022 (75/252) and in 2024 (3/12); at most 100 drawn at random (seed 42), reused across models and folds |
 | **Inference** | 36 target × land-type tasks as paired units (pixels are not replicates); Friedman test, then two-sided Wilcoxon signed-rank tests with Holm correction |
 
-> **Open provenance item (TWS × BiLSTM).** In the current Figure 7 source table, 4 of the 216 model–task cells (BiLSTM for TWS,
-> one per land type) carry values from the supplementary 18-month TWS configuration rather than the common 12-month run.
-> Substituting the common-benchmark run leaves all win counts and all Friedman/Wilcoxon–Holm conclusions unchanged
-> (details in [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)).
+> **Common benchmark for all Figure 7 cells.** All 216 model–task cells of Figure 7 (and of the derived Tables 4–5, Figure S8
+> and the statistical comparison) come from the common 12-month benchmark. The 18-month TWS BiLSTM run in
+> `src/forecasting/tws_bilstm_special/` is a supplementary hydroclimate sensitivity and is not used in the main common 12-month
+> Figure 7 benchmark (details in [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)).
 
 ## Repository map
 
@@ -81,7 +81,9 @@ flowchart LR
 | Supplementary: NIRv threshold sensitivity | `src/figures/figS10_nirv_threshold_sensitivity.py` |
 | Supplementary: Figure-5 deseasonalised sensitivity; IAAFT null | `src/figures/refined_figures_fig5_S4_S5_S6_S7_S9_null.py`, `src/figures/fig09_transition_matrices.py` |
 
-Tables: hyperparameters and folds — `config/`; forecast rankings / predictability, NIRv response tables — `src/tables/verify_tables_2_4_5_6.py`
+Tables: hyperparameters and folds — `config/`; Figure 7 source on the common 12-month benchmark —
+`src/tables/figure7_tws_common_benchmark_correction.py`; forecast rankings / predictability (Tables 4–5) —
+`src/tables/tables_4_5_from_corrected_figure7.py`; NIRv response tables — `src/tables/verify_tables_2_4_5_6.py`
 and `src/tables/rebuild_corrected_tables_3_4.py`; pairwise statistics — `src/tables/forecast_pairwise_statistics_table.py`;
 EWBI temporal variation — `src/tables/ewbi_temporal_variation_table.py`; pixel counts — `config/pixel_selection_counts.csv`.
 

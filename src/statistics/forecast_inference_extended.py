@@ -16,14 +16,9 @@ from scipy.stats import friedmanchisquare, rankdata, wilcoxon
 
 HERE = Path(__file__).resolve().parent
 DP = HERE.parents[2]
-SOURCE = (
-    DP
-    / "Docs"
-    / "major_revision_analyses"
-    / "corrected_true_BiLSTM_rerun_20260728"
-    / "08_downstream"
-    / "final_corrected_Figure_7_source_table.csv"
-)
+# SOURCE = final Figure 7 source (all 216 cells on the common 12-month benchmark), built by
+# src/tables/figure7_tws_common_benchmark_correction.py.
+SOURCE = DP / "AUDIT_TEMP" / "FIGURE7_TWS_COMMON_CORRECTION" / "source_tables" / "Figure_7_source.csv"
 MODELS = ["LSTM", "BiLSTM", "TCN", "N-BEATS", "N-HiTS", "XGBoost"]
 METRICS = {
     "r2": ("mean_r2", True),

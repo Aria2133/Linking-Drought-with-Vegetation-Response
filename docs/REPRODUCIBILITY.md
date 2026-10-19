@@ -41,21 +41,24 @@ learned models, plus SVR and baselines); a CUDA GPU is recommended for the neura
   sample cap 4000, gradient clipping 1.0. Runs: seven targets in `corrected_bilstm/run_corrected_true_bilstm.py`;
   SPEI-1 in `gndvi_spei_no_detrend/`; TWS in the common benchmark (`benchmark/05_run_tcn_nbeats_nhits.py`).
   The BiLSTM function inside `benchmark/model_core.py` is not used for the final results of the seven targets above.
-- **TWS × BiLSTM — open provenance item.** The current Figure 7 source table
-  (`results/forecasting/figure7_final_task_metrics.csv`, column `selected_configuration`) takes its four BiLSTM-TWS cells
-  from `tws_bilstm_special/`, a *supplementary hydroclimate sensitivity* (18-month lookback, Adam, ≤ 30 epochs, patience 7,
-  global min–max scaling, training-only state-space gap filling, 3 seeds). The common 12-month BiLSTM-TWS run also exists:
+- **TWS × BiLSTM.** All 216 Figure 7 cells use the common 12-month benchmark
+  (`results/forecasting/figure7_final_task_metrics.csv`, column `selected_configuration`). An earlier version of the Figure 7
+  source took its four BiLSTM-TWS cells from the 18-month run; `src/tables/figure7_tws_common_benchmark_correction.py` replaced
+  them with the existing common 12-month rows (seed 42, four folds; mean and SD with ddof = 1). No model was retrained.
 
-  | land type | R² in current table (18-month) | R² common 12-month run | nRMSE current | nRMSE 12-month |
-  |---|---|---|---|---|
-  | Grasslands | 0.756 | 0.761 | 0.487 | 0.486 |
-  | Natural Forests | 0.415 | 0.367 | 0.748 | 0.786 |
-  | Savannas | 0.685 | 0.583 | 0.559 | 0.643 |
-  | Shrublands | 0.607 | 0.443 | 0.622 | 0.733 |
+  | land type | BiLSTM-TWS R² (mean ± SD) | nRMSE (mean ± SD) |
+  |---|---|---|
+  | Grasslands | 0.761 ± 0.065 | 0.485 ± 0.067 |
+  | Natural Forests | 0.367 ± 0.230 | 0.786 ± 0.140 |
+  | Savannas | 0.583 ± 0.089 | 0.643 ± 0.067 |
+  | Shrublands | 0.442 ± 0.259 | 0.733 ± 0.167 |
 
-  Substituting the common run changes BiLSTM's mean R² from 0.669 to 0.661 and mean nRMSE from 0.532 to 0.538, and leaves the
-  descriptive best-model counts, both Friedman tests and every Holm-significant pair unchanged. Which values the manuscript
-  reports is an author decision; until then the repository reproduces the current table as published.
+  Consequences: BiLSTM mean R² 0.661, mean nRMSE 0.538 (Table 4); TWS target mean R² 0.296, nRMSE 0.792 (Table 5). Best-model
+  counts, predictability classes, both Friedman tests and all nine Holm-significant pairs are unchanged; in the pairwise table
+  only the non-significant nRMSE BiLSTM–N-HiTS row changed (W 215, p = 0.064, Holm p = 0.322, r = 0.354).
+- **18-month TWS BiLSTM** (`tws_bilstm_special/`: 18-month lookback, Adam, ≤ 30 epochs, patience 7, global min–max scaling,
+  training-only state-space gap filling, seeds 42/123/2026): supplementary hydroclimate sensitivity; not used in the main
+  common 12-month Figure 7 benchmark.
 - **Seeds.** Not every model was run with three seeds (`config/random_seeds.yaml`).
 - **Paths.** Scripts are published as run, except that absolute local path roots were replaced by placeholders
   (checksums of the original and published files are in `FILE_PROVENANCE.csv`). Scripts written during the 2026 revision
@@ -72,14 +75,16 @@ These remain inside scripts that also contain final code; they are not used for 
 |---|---|
 | `forecasting/benchmark/candidate_config.py`, `02_run_baselines.py`, `06_compile_benchmark.py`, `gndvi_spei_no_detrend/`, `svr/` | SARIMA baseline branches (dropped from the final paper) |
 | `forecasting/*/candidate_config.py` (`MODE_A`), `01_define_rolling_origin_folds.py` | single 2024 hold-out design ("Mode A"); the final design is the four rolling-origin folds |
-| `forecasting/tws_bilstm_special/` | 18-month TWS / 24-month SPEI hydroclimate configurations — supplementary sensitivity only |
+| `forecasting/tws_bilstm_special/` | 18-month TWS / 24-month SPEI hydroclimate configurations — supplementary hydroclimate sensitivity; not used in the main common 12-month Figure 7 benchmark |
 | `figures/fig08_nirv_change_maps.py` | its Figure 7 function (only `render_figure8_no_boxes` is used) |
 | `figures/figS02_S03_S04_S05_supplementary.py` | only `build_s4` (gap filling) and `build_s5` (detrending) are current; its S4/S5 builders are superseded by `ecological/sensitivity/harmonized_S4_S5_S6.py` |
 | `preprocessing/02_landtype_series/02_prepare_paper_standardized_anomalies.py`; `ecological/sensitivity/ewbi_period_response_and_severe_area_tables.py` (S5 part) | GNDVI rows built from the QA-masked GNDVI product; the final analyses use the previous/no-QA GNDVI series (`03_previous_gndvi_series_and_figures_5_6.py`, `harmonized_S4_S5_S6.py`) |
 | `ecological/correlations/cross_correlation_and_submitted_fig5_logic.py` | its Figure 5 function (position-truncated pairing) is superseded by `figure5_date_aligned_correlations.py`; `ccf_calculate` (Figure 6) is current |
 
 ## Known gaps
-- The script that masked gridMET SPEI-1 exports to land types was not preserved (see `WORKFLOW.md`).
+- The script that masked gridMET SPEI-1 exports to land types was not preserved (see `WORKFLOW.md`). It was not reconstructed:
+  the California-wide gridMET SPEI-1 exports it read (`SPEI1_GRIDMET_CA_YYYY_MM`, Earth Engine Drive folder `SPEI1_GRIDMET_TIFs`)
+  are not kept locally, so a reconstruction could not be validated against the final land-type products.
 - Figure 6 cross-correlations are computed on raw monthly land-type means (no detrending, deseasonalising or prewhitening);
   GNDVI enters through 2021 (with two forward-filled months), the other variables through 2024. They describe lagged
   co-variation only and are not causal.

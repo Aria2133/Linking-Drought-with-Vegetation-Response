@@ -21,10 +21,8 @@ VALIDATION_DIR = ROOT / "validation"
 REPORT_DIR = ROOT / "reports"
 BACKUP_DIR = ROOT / "backups"
 
-FIG7_SOURCE = Path(
-    r"<PROJECT_ROOT>\Docs\major_revision_analyses"
-    r"\corrected_true_BiLSTM_rerun_20260728\08_downstream\final_corrected_Figure_7_source_table.csv"
-)
+# Final Figure 7 source (all 216 cells on the common 12-month benchmark; src/tables/figure7_tws_common_benchmark_correction.py)
+FIG7_SOURCE = Path(r"<PROJECT_ROOT>\AUDIT_TEMP\FIGURE7_TWS_COMMON_CORRECTION\source_tables\Figure_7_source.csv")
 PIXEL_SOURCE_NO_SVR = Path(
     r"<PROJECT_ROOT>\Docs\major_revision_analyses"
     r"\corrected_true_BiLSTM_rerun_20260728\08_downstream\corrected_combined_pixel_metrics.csv"

@@ -55,7 +55,7 @@ Target-specific, univariate: each of 9 targets × 4 land types is forecast one m
 | RBF-ε-SVR | `svr/run_svr_benchmark.py` |
 | Combine results; replace superseded BiLSTM rows; corrected supplementary sources | `benchmark/06_compile_benchmark.py`, `corrected_bilstm/patch_corrected_bilstm_into_results.py`, `corrected_bilstm/reconcile_corrected_bilstm_figures.py` |
 | Forecast-derived EWBI | `forecast_derived_ewbi/recover_forecast_derived_ewbi.py` |
-| *Supplementary sensitivity — not part of the common benchmark design:* 18-month TWS / 24-month SPEI hydroclimate configurations | `tws_bilstm_special/` (see `REPRODUCIBILITY.md`, TWS × BiLSTM note) |
+| *Supplementary hydroclimate sensitivity; not used in the main common 12-month Figure 7 benchmark:* 18-month TWS / 24-month SPEI configurations | `tws_bilstm_special/` |
 
 Preprocessing inside every fold (imputation, detrending where used, calendar-month z-scaling) is fitted on dates up to the fold's
 training end only; the last 24 training months are the internal validation window; test months are never used for fitting.
@@ -69,3 +69,11 @@ training end only; the last 24 training months are the internal validation windo
 
 ## 7. Figures and tables — `src/figures/`, `src/tables/`
 See the figure/table map in the main [README](../README.md).
+
+Forecasting figures and tables are built in this order (no model is retrained):
+1. `src/tables/figure7_tws_common_benchmark_correction.py` — final Figure 7 source: the accepted source table with the four
+   BiLSTM × TWS cells taken from the common 12-month benchmark (mean and SD, ddof = 1, over the four rolling-origin fold rows);
+   exported as `results/forecasting/figure7_final_task_metrics.csv`.
+2. `src/figures/fig07_point_errorbar_best_counts.py` (Figure 7) and `src/figures/figS08_forecast_heatmaps.py` lineage (Figure S8) read that source.
+3. `src/tables/tables_4_5_from_corrected_figure7.py` (Tables 4–5), `src/statistics/forecast_model_comparison.py`,
+   `src/statistics/forecast_inference_extended.py` and `src/tables/forecast_pairwise_statistics_table.py` (statistical comparison).

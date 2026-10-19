@@ -18,7 +18,9 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 OUT = HERE.parent
 PAPER = OUT.parents[1]
-SOURCE_DIR = PAPER / "AUDIT_TEMP" / "REVISION_COMPUTATIONAL_PHASE" / "task2_forecast_inference"
+# Copy of FORECAST_STATISTICAL_TABLE_FINAL/scripts/build_forecast_pairwise_table.py. Changes: SOURCE_DIR points to the
+# task-2 rerun on the corrected Figure 7 source, and the Table 4 gate reads the recomputed TABLE_4_CORRECTED.csv.
+SOURCE_DIR = OUT.parent / "TASK2_INFERENCE"
 
 FILES = [
     "forecast_pairwise_tests_holm.csv",
@@ -122,13 +124,10 @@ def main() -> None:
     assert joined["verified_favored_model"].eq(joined["favored_model_by_rank_biserial"]).all()
 
     # Figure 7/Table 4 descriptive consistency gate.
+    _t4 = pd.read_csv(OUT.parent / "TABLE_4_CORRECTED.csv", encoding="utf-8-sig")
     expected_table4 = {
-        "XGBoost": (17, 18, 0.633, 0.551),
-        "BiLSTM": (7, 7, 0.669, 0.532),
-        "TCN": (6, 4, 0.559, 0.608),
-        "N-BEATS": (2, 4, 0.643, 0.547),
-        "LSTM": (4, 3, 0.618, 0.567),
-        "N-HiTS": (0, 0, 0.639, 0.550),
+        row["Model"]: (int(row["Best R² count"]), int(row["Best nRMSE count"]), float(row["Mean R²"]), float(row["Mean nRMSE"]))
+        for _, row in _t4.iterrows()
     }
     table4_checks = []
     for model, expected in expected_table4.items():
@@ -306,7 +305,7 @@ def main() -> None:
 
 The authoritative set is the internally consistent output bundle in `AUDIT_TEMP/REVISION_COMPUTATIONAL_PHASE/task2_forecast_inference`. Each requested CSV name occurs once within `REVISION_COMPUTATIONAL_PHASE`. A broader root-level Markdown report also exists, but it summarizes additional model sets and sensitivity analyses; it was not substituted for the task-specific six-learned-model output bundle.
 
-The task-specific bundle documents `Docs/major_revision_analyses/corrected_true_BiLSTM_rerun_20260728/08_downstream/final_corrected_Figure_7_source_table.csv` as its source. That source exists and has SHA-256 `cff02914df3aed87cdcb16827cf7ab7b8819e7fa4c7258e41d372670909a7e71`.
+The task-2 rerun reads `AUDIT_TEMP/FIGURE7_TWS_COMMON_CORRECTION/source_tables/Figure_7_source.csv` (the accepted Figure 7 source with the four BiLSTM x TWS cells replaced by the common 12-month benchmark rows), SHA-256 `a43983e5390f5c2b96a8e70ce170330e03a222d16f6aaa7bccdf51625e733884`.
 
 {chr(10).join(file_table_lines)}
 
@@ -338,7 +337,7 @@ Effect sizes joined one-to-one across all 30 metric/model-pair rows. Direction l
 
 ## 5. Figure 7 and Table 4 consistency
 
-All supplied final descriptive values match `forecast_model_rank_summary.csv`: XGBoost 17/18 wins and means 0.633/0.551; BiLSTM 7/7 and 0.669/0.532; TCN 6/4 and 0.559/0.608; N-BEATS 2/4 and 0.643/0.547; LSTM 4/3 and 0.618/0.567; N-HiTS 0/0 and 0.639/0.550. The task table contains 216 unique model-task rows, all six models on each of 36 tasks, and four folds per task. No inconsistency was found.
+All supplied final descriptive values match `forecast_model_rank_summary.csv`: XGBoost 17/18 wins and means 0.633/0.551; BiLSTM 7/7 and 0.661/0.538; TCN 6/4 and 0.559/0.608; N-BEATS 2/4 and 0.643/0.547; LSTM 4/3 and 0.618/0.567; N-HiTS 0/0 and 0.639/0.550. The task table contains 216 unique model-task rows, all six models on each of 36 tasks, and four folds per task. No inconsistency was found.
 
 These descriptive summaries were used only as a consistency check and did not override the inferential results.
 

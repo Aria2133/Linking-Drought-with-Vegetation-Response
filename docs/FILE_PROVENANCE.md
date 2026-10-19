@@ -13,7 +13,18 @@ Every script in `src/` is a copy of the file that produced the reported results 
   - `src/figures/fig03_fig04_anomaly_timeseries.py`: caption text "QA-controlled GNDVI" → "GNDVI (previous/no-QA product)" (the plotted series is the previous/no-QA GNDVI);
   - `src/statistics/state_transition_iaaft_null.py`: input/output path block pointed at the bundled `results/states/` tables
     (verified to reproduce the original output exactly).
+- Final TWS common-benchmark correction (October 2026): four scripts read the final Figure 7 source
+  (`AUDIT_TEMP/FIGURE7_TWS_COMMON_CORRECTION/source_tables/Figure_7_source.csv`, built by
+  `src/tables/figure7_tws_common_benchmark_correction.py`) instead of the earlier source whose four BiLSTM-TWS cells came from
+  the 18-month sensitivity. Only the input path changed in `src/statistics/forecast_inference_extended.py`,
+  `src/figures/figS08_forecast_heatmaps.py` and `src/tables/verify_tables_2_4_5_6.py`. In
+  `src/tables/forecast_pairwise_statistics_table.py` the input folder changed, its hard-coded Table 4 check now reads the
+  recomputed Table 4, and two report sentences quote the new values. `src/figures/fig07_point_errorbar_best_counts.py` is
+  unchanged; it was rerun on the final source.
 - `role` — what the script does.
+
+Written during the final correction, in the revision workspace, and published verbatim:
+`src/tables/figure7_tws_common_benchmark_correction.py` and `src/tables/tables_4_5_from_corrected_figure7.py`.
 
 Written for this repository (no project original): `src/statistics/forecast_model_comparison.py` (minimal, verified
 re-implementation of the accepted Friedman/Wilcoxon/Holm analysis), the `results/` tables exported from the final source
