@@ -1,47 +1,40 @@
-```
-# Python
+# Python / tooling
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Virtual Environment
+.ipynb_checkpoints/
+.venv/
 venv/
-ENV/
-env/
-.venv
-
-# IDE
-.vscode/
 .idea/
-*.swp
+.vscode/
+.agents/
+*.log
 .DS_Store
 
-# Data Files
-*.nc
+# This repository holds code and documentation only: never commit data, caches or model files
 *.tif
 *.tiff
+*.nc
 *.hdf
 *.h5
-
-# Temporary Files
-*.tmp
-*.bak
-*.log
-temp/
-tmp/
+*.npz
+*.npy
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.keras
+*.ckpt
+*.parquet
+*.csv.gz
+*.xlsx
+*.zip
+*.rar
+data/
+outputs/
+cache/
+checkpoints/
 
 # Credentials
-*.json
 .env
-credentials/
-```
-
----
+*.json
+!config/*.json
