@@ -1,0 +1,32 @@
+# Random seeds used in the final analyses (values taken from the code listed for each entry).
+
+pixel_selection:
+  seed: 42                      # numpy default_rng(42); src/forecasting/benchmark/raster_pipeline.py
+  rule: "if > 100 eligible pixels, draw 100 without replacement; otherwise keep all"
+
+forecasting_runs:
+  candidate_seeds: [42, 123, 2026]          # src/forecasting/benchmark/candidate_config.py (SEEDS)
+  seeds_actually_run:
+    LSTM: [42, 123, 2026]
+    N-BEATS: [42, 123, 2026]
+    XGBoost: [42, 123, 2026]
+    BiLSTM:
+      GNDVI: [42, 123, 2026]
+      TWS: [42, 123, 2026]                  # TWS special configuration
+      other_targets: [42]
+    TCN:
+      GNDVI: [42, 123, 2026]
+      other_targets: [42]
+    N-HiTS:
+      GNDVI: [42, 123, 2026]
+      other_targets: [42]
+    RBF-epsilon-SVR: deterministic
+    baselines: deterministic
+  training_subsample: "same seed draws the training-sample cap (4000; 6000 for TWS BiLSTM) and the DataLoader shuffle"
+
+statistics:
+  forecast_comparison_bootstrap: 20261013   # cluster bootstrap over targets, 2000 replicates
+  iaaft_state_null: 20261013                 # 1000 independent IAAFT surrogate pairs per land type
+  ewbi_period_response_block_bootstrap: 42   # moving-block bootstrap, block 12 months, 2000 replicates
+  severe_area_spatial_block_bootstrap: 42    # 10 x 10 pixel blocks, 2000 replicates
+  gap_filling_artificial_gaps: 42            # 12 replicates x {contiguous, random 10 %} gaps
