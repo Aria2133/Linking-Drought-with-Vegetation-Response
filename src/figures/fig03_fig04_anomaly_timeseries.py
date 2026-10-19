@@ -269,7 +269,7 @@ def render_no_monthly(
 
 def write_captions() -> None:
     fig2_caption = (
-        "Baseline-referenced standardized anomalies of NDVI, QA-controlled GNDVI, "
+        "Baseline-referenced standardized anomalies of NDVI, GNDVI (previous/no-QA product), "
         "NIRv, GOSIF, and GPP across four California land types from 2001 to 2024. "
         "The 2001-2011 calendar-month climatology was removed and anomalies were "
         "scaled by the baseline standard deviation. Lines show 3-month moving means."

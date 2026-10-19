@@ -23,34 +23,49 @@ nearest-mask procedure (file names `SPEI1_GRIDMET_CA_YYYY_MM_<Land>.tif`).
 4. `03_previous_gndvi_series_and_figures_5_6.py` — GNDVI land-type series used in the final analyses.
 
 ## 4. Ecological analyses — `src/ecological/`
+Main ecological analyses use baseline-referenced, deseasonalised-only anomalies (2001–2011 calendar-month climatology removed;
+no long-term detrending). Detrending and gap-filling alternatives are sensitivity analyses only.
+
 | Analysis | Script |
 |---|---|
-| **EWBI** — signed mean of temporally standardised (2001–2011 mean/SD) land-type components: +SPEI-1, +TWS, −VPDmax, −LST, equal weights | `ewbi/02_ewbi_by_preprocessing.py` (`compute_ewbi`) |
-| Descriptive EWBI–NIRv states (median quadrants) and empirical month-to-month transition proportions | `states/01_main_ewbi_states_transitions.py`, `states/fixed_utils.py` |
+| **EWBI** — equal-weight signed mean of land-type components (+SPEI-1, +TWS, −VPDmax, −LST), each deseasonalised and standardised over time with its 2001–2011 mean and SD (no spatial standardisation) | `ewbi/02_ewbi_by_preprocessing.py` (`compute_ewbi`) |
+| EWBI temporal-variation diagnostics; recomputation check; component correlations; TWS/LST fill status | `ewbi/ewbi_temporal_variation_diagnostics.py`, `../tables/ewbi_temporal_variation_table.py` |
+| EWBI standardisation variant and **TWS/LST observed-only baseline** sensitivity | `ewbi/ewbi_standardisation_and_observed_baseline_sensitivity.py` |
+| EWBI components, leave-one-out, equal / PCA / ridge weighting; period-stratified responses; state-classification alternatives (33/67 percentile, k-means, GMM) — all on the Figure-9 EWBI/NIRv inputs and previous/no-QA GNDVI | `sensitivity/harmonized_S4_S5_S6.py` |
+| Descriptive EWBI × NIRv classes (land-type medians) and empirical month-to-month transition proportions | `states/01_main_ewbi_states_transitions.py`, `states/fixed_utils.py` |
 | Resistance / recovery and preprocessing sensitivity | `states/03_resilience_and_state_sensitivity.py` |
-| NIRv % change maps, severe-response area (−30/−40/−50 %), spatial-block bootstrap | `nirv_response_and_tws_scale/04_nirv_change_maps_severe_area_bootstrap.py` |
-| TWS spatial-support and resampling sensitivity | `nirv_response_and_tws_scale/02_*.py`, `03_*.py` |
+| NIRv % change maps; operational −40 % severe-response threshold with −30 / −50 % sensitivity; latitude-aware areas; paired spatial-block bootstrap | `nirv_response_and_tws_scale/04_nirv_change_maps_severe_area_bootstrap.py`, `sensitivity/ewbi_period_response_and_severe_area_tables.py` (severe-area table) |
+| TWS coarse-support and resampling sensitivity | `nirv_response_and_tws_scale/02_*.py`, `03_*.py` |
 | Gap-filling comparison | `gap_filling/` |
-| Cross-correlation functions (Fig 6) and Fig 5 correlations | `correlations/cross_correlation_and_submitted_fig5_logic.py` |
-| EWBI component / weighting tests, period-stratified responses, state-classification alternatives (S4–S6) | `sensitivity/` |
+| Figure 5: raw monthly Pearson correlations on exact YYYY-MM pairs (primary); deseasonalised correlations (sensitivity) | `correlations/figure5_date_aligned_correlations.py` |
+| Figure 6: cross-correlation functions on raw monthly means (no prewhitening) | `correlations/cross_correlation_and_submitted_fig5_logic.py` (`ccf_calculate`) |
+| GPP: FLUXCOM-X 2001–2021 + MOD17A2H 2022–2024 as analysed; FLUXCOM-only (≤ 2021) sensitivity; no cross-product calibration | `gpp/gpp_product_transition_sensitivity.py` |
 
 ## 5. Forecasting — `src/forecasting/`
-Target-specific, univariate: each of 9 targets × 4 land types is forecast one month ahead from its own previous months.
+Target-specific, univariate: each of 9 targets × 4 land types is forecast one month ahead from its own previous 12 months.
+
 | Step | Script |
 |---|---|
 | Pixel screening and caches, supervised windows | `benchmark/raster_pipeline.py` (rule: `config/pixel_selection_criteria.md`) |
 | Rolling-origin folds | `benchmark/01_define_rolling_origin_folds.py` (`config/rolling_origin_folds.csv`) |
-| Baselines | `benchmark/02_run_baselines.py` |
-| XGBoost, LSTM, TCN / N-BEATS / N-HiTS | `benchmark/03_*.py`, `04_*.py`, `05_*.py` |
+| Baselines (persistence, seasonal persistence, monthly climatology) | `benchmark/02_run_baselines.py` |
+| XGBoost; LSTM; TCN / N-BEATS / N-HiTS and BiLSTM for TWS | `benchmark/03_*.py`; `04_*.py`; `05_*.py` |
 | GNDVI and SPEI-1 without detrending (all learned models) | `gndvi_spei_no_detrend/run_no_detrend_gndvi_spei.py` |
-| Corrected BiLSTM (7 targets) | `corrected_bilstm/run_corrected_true_bilstm.py` |
-| BiLSTM for TWS | `tws_bilstm_special/` |
+| Corrected BiLSTM for NDVI, GNDVI, NIRv, GOSIF/SIF, GPP, LST, VPDmax | `corrected_bilstm/run_corrected_true_bilstm.py` |
 | RBF-ε-SVR | `svr/run_svr_benchmark.py` |
-| Combine results, replace superseded BiLSTM rows | `benchmark/06_compile_benchmark.py`, `corrected_bilstm/patch_corrected_bilstm_into_results.py`, `../tables/` |
+| Combine results; replace superseded BiLSTM rows; corrected supplementary sources | `benchmark/06_compile_benchmark.py`, `corrected_bilstm/patch_corrected_bilstm_into_results.py`, `corrected_bilstm/reconcile_corrected_bilstm_figures.py` |
 | Forecast-derived EWBI | `forecast_derived_ewbi/recover_forecast_derived_ewbi.py` |
+| *Supplementary sensitivity — not part of the common benchmark design:* 18-month TWS / 24-month SPEI hydroclimate configurations | `tws_bilstm_special/` (see `REPRODUCIBILITY.md`, TWS × BiLSTM note) |
 
 Preprocessing inside every fold (imputation, detrending where used, calendar-month z-scaling) is fitted on dates up to the fold's
 training end only; the last 24 training months are the internal validation window; test months are never used for fitting.
 
-## 6. Figures and tables — `src/figures/`, `src/tables/`
+## 6. Statistics — `src/statistics/`
+| Analysis | Script |
+|---|---|
+| Friedman test across the six learned models (36 paired tasks), then two-sided Wilcoxon signed-rank tests with Holm correction over the 15 pairs per metric | `forecast_model_comparison.py` |
+| Extended tables (ranks, effect sizes, cluster bootstrap over targets, target-level sensitivity) | `forecast_inference_extended.py` |
+| IAAFT null for diagonal self-transition proportions (500 independent EWBI/NIRv surrogate pairs per land type) | `state_transition_iaaft_null.py` |
+
+## 7. Figures and tables — `src/figures/`, `src/tables/`
 See the figure/table map in the main [README](../README.md).

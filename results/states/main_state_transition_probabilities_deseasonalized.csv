@@ -1,0 +1,257 @@
+land_type,period,from_state,to_state,transition_count,source_state_transition_count,transition_probability,preprocessing
+Grasslands,all,Wet / Healthy,Wet / Healthy,67,95,0.7052631578947368,deseasonalized_only
+Grasslands,all,Wet / Healthy,Wet / Suppressed,8,95,0.08421052631578947,deseasonalized_only
+Grasslands,all,Wet / Healthy,Dry / Resilient,17,95,0.17894736842105263,deseasonalized_only
+Grasslands,all,Wet / Healthy,Dry / Stressed,3,95,0.031578947368421054,deseasonalized_only
+Grasslands,all,Wet / Suppressed,Wet / Healthy,12,49,0.24489795918367346,deseasonalized_only
+Grasslands,all,Wet / Suppressed,Wet / Suppressed,22,49,0.4489795918367347,deseasonalized_only
+Grasslands,all,Wet / Suppressed,Dry / Resilient,2,49,0.04081632653061224,deseasonalized_only
+Grasslands,all,Wet / Suppressed,Dry / Stressed,13,49,0.2653061224489796,deseasonalized_only
+Grasslands,all,Dry / Resilient,Wet / Healthy,9,49,0.1836734693877551,deseasonalized_only
+Grasslands,all,Dry / Resilient,Wet / Suppressed,2,49,0.04081632653061224,deseasonalized_only
+Grasslands,all,Dry / Resilient,Dry / Resilient,27,49,0.5510204081632653,deseasonalized_only
+Grasslands,all,Dry / Resilient,Dry / Stressed,11,49,0.22448979591836735,deseasonalized_only
+Grasslands,all,Dry / Stressed,Wet / Healthy,7,94,0.07446808510638298,deseasonalized_only
+Grasslands,all,Dry / Stressed,Wet / Suppressed,17,94,0.18085106382978725,deseasonalized_only
+Grasslands,all,Dry / Stressed,Dry / Resilient,3,94,0.031914893617021274,deseasonalized_only
+Grasslands,all,Dry / Stressed,Dry / Stressed,67,94,0.7127659574468085,deseasonalized_only
+Grasslands,baseline,Wet / Healthy,Wet / Healthy,46,60,0.7666666666666667,deseasonalized_only
+Grasslands,baseline,Wet / Healthy,Wet / Suppressed,6,60,0.1,deseasonalized_only
+Grasslands,baseline,Wet / Healthy,Dry / Resilient,5,60,0.08333333333333333,deseasonalized_only
+Grasslands,baseline,Wet / Healthy,Dry / Stressed,3,60,0.05,deseasonalized_only
+Grasslands,baseline,Wet / Suppressed,Wet / Healthy,7,33,0.21212121212121213,deseasonalized_only
+Grasslands,baseline,Wet / Suppressed,Wet / Suppressed,19,33,0.5757575757575758,deseasonalized_only
+Grasslands,baseline,Wet / Suppressed,Dry / Resilient,1,33,0.030303030303030304,deseasonalized_only
+Grasslands,baseline,Wet / Suppressed,Dry / Stressed,6,33,0.18181818181818182,deseasonalized_only
+Grasslands,baseline,Dry / Resilient,Wet / Healthy,5,14,0.35714285714285715,deseasonalized_only
+Grasslands,baseline,Dry / Resilient,Wet / Suppressed,0,14,0.0,deseasonalized_only
+Grasslands,baseline,Dry / Resilient,Dry / Resilient,8,14,0.5714285714285714,deseasonalized_only
+Grasslands,baseline,Dry / Resilient,Dry / Stressed,1,14,0.07142857142857142,deseasonalized_only
+Grasslands,baseline,Dry / Stressed,Wet / Healthy,2,24,0.08333333333333333,deseasonalized_only
+Grasslands,baseline,Dry / Stressed,Wet / Suppressed,8,24,0.3333333333333333,deseasonalized_only
+Grasslands,baseline,Dry / Stressed,Dry / Resilient,1,24,0.041666666666666664,deseasonalized_only
+Grasslands,baseline,Dry / Stressed,Dry / Stressed,13,24,0.5416666666666666,deseasonalized_only
+Grasslands,historic drought,Wet / Healthy,Wet / Healthy,0,6,0.0,deseasonalized_only
+Grasslands,historic drought,Wet / Healthy,Wet / Suppressed,1,6,0.16666666666666666,deseasonalized_only
+Grasslands,historic drought,Wet / Healthy,Dry / Resilient,5,6,0.8333333333333334,deseasonalized_only
+Grasslands,historic drought,Wet / Healthy,Dry / Stressed,0,6,0.0,deseasonalized_only
+Grasslands,historic drought,Wet / Suppressed,Wet / Healthy,1,10,0.1,deseasonalized_only
+Grasslands,historic drought,Wet / Suppressed,Wet / Suppressed,3,10,0.3,deseasonalized_only
+Grasslands,historic drought,Wet / Suppressed,Dry / Resilient,1,10,0.1,deseasonalized_only
+Grasslands,historic drought,Wet / Suppressed,Dry / Stressed,5,10,0.5,deseasonalized_only
+Grasslands,historic drought,Dry / Resilient,Wet / Healthy,3,12,0.25,deseasonalized_only
+Grasslands,historic drought,Dry / Resilient,Wet / Suppressed,1,12,0.08333333333333333,deseasonalized_only
+Grasslands,historic drought,Dry / Resilient,Dry / Resilient,6,12,0.5,deseasonalized_only
+Grasslands,historic drought,Dry / Resilient,Dry / Stressed,2,12,0.16666666666666666,deseasonalized_only
+Grasslands,historic drought,Dry / Stressed,Wet / Healthy,3,31,0.0967741935483871,deseasonalized_only
+Grasslands,historic drought,Dry / Stressed,Wet / Suppressed,5,31,0.16129032258064516,deseasonalized_only
+Grasslands,historic drought,Dry / Stressed,Dry / Resilient,0,31,0.0,deseasonalized_only
+Grasslands,historic drought,Dry / Stressed,Dry / Stressed,23,31,0.7419354838709677,deseasonalized_only
+Grasslands,recent,Wet / Healthy,Wet / Healthy,12,14,0.8571428571428571,deseasonalized_only
+Grasslands,recent,Wet / Healthy,Wet / Suppressed,0,14,0.0,deseasonalized_only
+Grasslands,recent,Wet / Healthy,Dry / Resilient,2,14,0.14285714285714285,deseasonalized_only
+Grasslands,recent,Wet / Healthy,Dry / Stressed,0,14,0.0,deseasonalized_only
+Grasslands,recent,Wet / Suppressed,Wet / Healthy,1,2,0.5,deseasonalized_only
+Grasslands,recent,Wet / Suppressed,Wet / Suppressed,0,2,0.0,deseasonalized_only
+Grasslands,recent,Wet / Suppressed,Dry / Resilient,0,2,0.0,deseasonalized_only
+Grasslands,recent,Wet / Suppressed,Dry / Stressed,1,2,0.5,deseasonalized_only
+Grasslands,recent,Dry / Resilient,Wet / Healthy,0,14,0.0,deseasonalized_only
+Grasslands,recent,Dry / Resilient,Wet / Suppressed,1,14,0.07142857142857142,deseasonalized_only
+Grasslands,recent,Dry / Resilient,Dry / Resilient,9,14,0.6428571428571429,deseasonalized_only
+Grasslands,recent,Dry / Resilient,Dry / Stressed,4,14,0.2857142857142857,deseasonalized_only
+Grasslands,recent,Dry / Stressed,Wet / Healthy,1,29,0.034482758620689655,deseasonalized_only
+Grasslands,recent,Dry / Stressed,Wet / Suppressed,1,29,0.034482758620689655,deseasonalized_only
+Grasslands,recent,Dry / Stressed,Dry / Resilient,2,29,0.06896551724137931,deseasonalized_only
+Grasslands,recent,Dry / Stressed,Dry / Stressed,25,29,0.8620689655172413,deseasonalized_only
+Natural Forests,all,Wet / Healthy,Wet / Healthy,48,81,0.5925925925925926,deseasonalized_only
+Natural Forests,all,Wet / Healthy,Wet / Suppressed,14,81,0.1728395061728395,deseasonalized_only
+Natural Forests,all,Wet / Healthy,Dry / Resilient,16,81,0.19753086419753085,deseasonalized_only
+Natural Forests,all,Wet / Healthy,Dry / Stressed,3,81,0.037037037037037035,deseasonalized_only
+Natural Forests,all,Wet / Suppressed,Wet / Healthy,16,62,0.25806451612903225,deseasonalized_only
+Natural Forests,all,Wet / Suppressed,Wet / Suppressed,27,62,0.43548387096774194,deseasonalized_only
+Natural Forests,all,Wet / Suppressed,Dry / Resilient,7,62,0.11290322580645161,deseasonalized_only
+Natural Forests,all,Wet / Suppressed,Dry / Stressed,12,62,0.1935483870967742,deseasonalized_only
+Natural Forests,all,Dry / Resilient,Wet / Healthy,13,63,0.20634920634920634,deseasonalized_only
+Natural Forests,all,Dry / Resilient,Wet / Suppressed,8,63,0.12698412698412698,deseasonalized_only
+Natural Forests,all,Dry / Resilient,Dry / Resilient,32,63,0.5079365079365079,deseasonalized_only
+Natural Forests,all,Dry / Resilient,Dry / Stressed,10,63,0.15873015873015872,deseasonalized_only
+Natural Forests,all,Dry / Stressed,Wet / Healthy,4,81,0.04938271604938271,deseasonalized_only
+Natural Forests,all,Dry / Stressed,Wet / Suppressed,14,81,0.1728395061728395,deseasonalized_only
+Natural Forests,all,Dry / Stressed,Dry / Resilient,7,81,0.08641975308641975,deseasonalized_only
+Natural Forests,all,Dry / Stressed,Dry / Stressed,56,81,0.691358024691358,deseasonalized_only
+Natural Forests,baseline,Wet / Healthy,Wet / Healthy,41,62,0.6612903225806451,deseasonalized_only
+Natural Forests,baseline,Wet / Healthy,Wet / Suppressed,11,62,0.1774193548387097,deseasonalized_only
+Natural Forests,baseline,Wet / Healthy,Dry / Resilient,8,62,0.12903225806451613,deseasonalized_only
+Natural Forests,baseline,Wet / Healthy,Dry / Stressed,2,62,0.03225806451612903,deseasonalized_only
+Natural Forests,baseline,Wet / Suppressed,Wet / Healthy,11,34,0.3235294117647059,deseasonalized_only
+Natural Forests,baseline,Wet / Suppressed,Wet / Suppressed,15,34,0.4411764705882353,deseasonalized_only
+Natural Forests,baseline,Wet / Suppressed,Dry / Resilient,5,34,0.14705882352941177,deseasonalized_only
+Natural Forests,baseline,Wet / Suppressed,Dry / Stressed,3,34,0.08823529411764706,deseasonalized_only
+Natural Forests,baseline,Dry / Resilient,Wet / Healthy,8,22,0.36363636363636365,deseasonalized_only
+Natural Forests,baseline,Dry / Resilient,Wet / Suppressed,5,22,0.22727272727272727,deseasonalized_only
+Natural Forests,baseline,Dry / Resilient,Dry / Resilient,7,22,0.3181818181818182,deseasonalized_only
+Natural Forests,baseline,Dry / Resilient,Dry / Stressed,2,22,0.09090909090909091,deseasonalized_only
+Natural Forests,baseline,Dry / Stressed,Wet / Healthy,2,13,0.15384615384615385,deseasonalized_only
+Natural Forests,baseline,Dry / Stressed,Wet / Suppressed,3,13,0.23076923076923078,deseasonalized_only
+Natural Forests,baseline,Dry / Stressed,Dry / Resilient,2,13,0.15384615384615385,deseasonalized_only
+Natural Forests,baseline,Dry / Stressed,Dry / Stressed,6,13,0.46153846153846156,deseasonalized_only
+Natural Forests,historic drought,Wet / Healthy,Wet / Healthy,2,7,0.2857142857142857,deseasonalized_only
+Natural Forests,historic drought,Wet / Healthy,Wet / Suppressed,0,7,0.0,deseasonalized_only
+Natural Forests,historic drought,Wet / Healthy,Dry / Resilient,4,7,0.5714285714285714,deseasonalized_only
+Natural Forests,historic drought,Wet / Healthy,Dry / Stressed,1,7,0.14285714285714285,deseasonalized_only
+Natural Forests,historic drought,Wet / Suppressed,Wet / Healthy,3,8,0.375,deseasonalized_only
+Natural Forests,historic drought,Wet / Suppressed,Wet / Suppressed,3,8,0.375,deseasonalized_only
+Natural Forests,historic drought,Wet / Suppressed,Dry / Resilient,1,8,0.125,deseasonalized_only
+Natural Forests,historic drought,Wet / Suppressed,Dry / Stressed,1,8,0.125,deseasonalized_only
+Natural Forests,historic drought,Dry / Resilient,Wet / Healthy,2,24,0.08333333333333333,deseasonalized_only
+Natural Forests,historic drought,Dry / Resilient,Wet / Suppressed,2,24,0.08333333333333333,deseasonalized_only
+Natural Forests,historic drought,Dry / Resilient,Dry / Resilient,15,24,0.625,deseasonalized_only
+Natural Forests,historic drought,Dry / Resilient,Dry / Stressed,5,24,0.20833333333333334,deseasonalized_only
+Natural Forests,historic drought,Dry / Stressed,Wet / Healthy,1,20,0.05,deseasonalized_only
+Natural Forests,historic drought,Dry / Stressed,Wet / Suppressed,3,20,0.15,deseasonalized_only
+Natural Forests,historic drought,Dry / Stressed,Dry / Resilient,3,20,0.15,deseasonalized_only
+Natural Forests,historic drought,Dry / Stressed,Dry / Stressed,13,20,0.65,deseasonalized_only
+Natural Forests,recent,Wet / Healthy,Wet / Healthy,0,1,0.0,deseasonalized_only
+Natural Forests,recent,Wet / Healthy,Wet / Suppressed,0,1,0.0,deseasonalized_only
+Natural Forests,recent,Wet / Healthy,Dry / Resilient,1,1,1.0,deseasonalized_only
+Natural Forests,recent,Wet / Healthy,Dry / Stressed,0,1,0.0,deseasonalized_only
+Natural Forests,recent,Wet / Suppressed,Wet / Healthy,0,11,0.0,deseasonalized_only
+Natural Forests,recent,Wet / Suppressed,Wet / Suppressed,6,11,0.5454545454545454,deseasonalized_only
+Natural Forests,recent,Wet / Suppressed,Dry / Resilient,0,11,0.0,deseasonalized_only
+Natural Forests,recent,Wet / Suppressed,Dry / Stressed,5,11,0.45454545454545453,deseasonalized_only
+Natural Forests,recent,Dry / Resilient,Wet / Healthy,0,6,0.0,deseasonalized_only
+Natural Forests,recent,Dry / Resilient,Wet / Suppressed,0,6,0.0,deseasonalized_only
+Natural Forests,recent,Dry / Resilient,Dry / Resilient,3,6,0.5,deseasonalized_only
+Natural Forests,recent,Dry / Resilient,Dry / Stressed,3,6,0.5,deseasonalized_only
+Natural Forests,recent,Dry / Stressed,Wet / Healthy,0,41,0.0,deseasonalized_only
+Natural Forests,recent,Dry / Stressed,Wet / Suppressed,6,41,0.14634146341463414,deseasonalized_only
+Natural Forests,recent,Dry / Stressed,Dry / Resilient,2,41,0.04878048780487805,deseasonalized_only
+Natural Forests,recent,Dry / Stressed,Dry / Stressed,33,41,0.8048780487804879,deseasonalized_only
+Savannas,all,Wet / Healthy,Wet / Healthy,63,92,0.6847826086956522,deseasonalized_only
+Savannas,all,Wet / Healthy,Wet / Suppressed,13,92,0.14130434782608695,deseasonalized_only
+Savannas,all,Wet / Healthy,Dry / Resilient,13,92,0.14130434782608695,deseasonalized_only
+Savannas,all,Wet / Healthy,Dry / Stressed,3,92,0.03260869565217391,deseasonalized_only
+Savannas,all,Wet / Suppressed,Wet / Healthy,13,52,0.25,deseasonalized_only
+Savannas,all,Wet / Suppressed,Wet / Suppressed,20,52,0.38461538461538464,deseasonalized_only
+Savannas,all,Wet / Suppressed,Dry / Resilient,6,52,0.11538461538461539,deseasonalized_only
+Savannas,all,Wet / Suppressed,Dry / Stressed,13,52,0.25,deseasonalized_only
+Savannas,all,Dry / Resilient,Wet / Healthy,13,52,0.25,deseasonalized_only
+Savannas,all,Dry / Resilient,Wet / Suppressed,5,52,0.09615384615384616,deseasonalized_only
+Savannas,all,Dry / Resilient,Dry / Resilient,25,52,0.4807692307692308,deseasonalized_only
+Savannas,all,Dry / Resilient,Dry / Stressed,9,52,0.17307692307692307,deseasonalized_only
+Savannas,all,Dry / Stressed,Wet / Healthy,3,91,0.03296703296703297,deseasonalized_only
+Savannas,all,Dry / Stressed,Wet / Suppressed,14,91,0.15384615384615385,deseasonalized_only
+Savannas,all,Dry / Stressed,Dry / Resilient,7,91,0.07692307692307693,deseasonalized_only
+Savannas,all,Dry / Stressed,Dry / Stressed,67,91,0.7362637362637363,deseasonalized_only
+Savannas,baseline,Wet / Healthy,Wet / Healthy,56,78,0.717948717948718,deseasonalized_only
+Savannas,baseline,Wet / Healthy,Wet / Suppressed,10,78,0.1282051282051282,deseasonalized_only
+Savannas,baseline,Wet / Healthy,Dry / Resilient,10,78,0.1282051282051282,deseasonalized_only
+Savannas,baseline,Wet / Healthy,Dry / Stressed,2,78,0.02564102564102564,deseasonalized_only
+Savannas,baseline,Wet / Suppressed,Wet / Healthy,9,21,0.42857142857142855,deseasonalized_only
+Savannas,baseline,Wet / Suppressed,Wet / Suppressed,8,21,0.38095238095238093,deseasonalized_only
+Savannas,baseline,Wet / Suppressed,Dry / Resilient,2,21,0.09523809523809523,deseasonalized_only
+Savannas,baseline,Wet / Suppressed,Dry / Stressed,2,21,0.09523809523809523,deseasonalized_only
+Savannas,baseline,Dry / Resilient,Wet / Healthy,11,20,0.55,deseasonalized_only
+Savannas,baseline,Dry / Resilient,Wet / Suppressed,2,20,0.1,deseasonalized_only
+Savannas,baseline,Dry / Resilient,Dry / Resilient,7,20,0.35,deseasonalized_only
+Savannas,baseline,Dry / Resilient,Dry / Stressed,0,20,0.0,deseasonalized_only
+Savannas,baseline,Dry / Stressed,Wet / Healthy,2,12,0.16666666666666666,deseasonalized_only
+Savannas,baseline,Dry / Stressed,Wet / Suppressed,1,12,0.08333333333333333,deseasonalized_only
+Savannas,baseline,Dry / Stressed,Dry / Resilient,1,12,0.08333333333333333,deseasonalized_only
+Savannas,baseline,Dry / Stressed,Dry / Stressed,8,12,0.6666666666666666,deseasonalized_only
+Savannas,historic drought,Wet / Healthy,Wet / Healthy,2,5,0.4,deseasonalized_only
+Savannas,historic drought,Wet / Healthy,Wet / Suppressed,0,5,0.0,deseasonalized_only
+Savannas,historic drought,Wet / Healthy,Dry / Resilient,3,5,0.6,deseasonalized_only
+Savannas,historic drought,Wet / Healthy,Dry / Stressed,0,5,0.0,deseasonalized_only
+Savannas,historic drought,Wet / Suppressed,Wet / Healthy,1,9,0.1111111111111111,deseasonalized_only
+Savannas,historic drought,Wet / Suppressed,Wet / Suppressed,4,9,0.4444444444444444,deseasonalized_only
+Savannas,historic drought,Wet / Suppressed,Dry / Resilient,1,9,0.1111111111111111,deseasonalized_only
+Savannas,historic drought,Wet / Suppressed,Dry / Stressed,3,9,0.3333333333333333,deseasonalized_only
+Savannas,historic drought,Dry / Resilient,Wet / Healthy,2,20,0.1,deseasonalized_only
+Savannas,historic drought,Dry / Resilient,Wet / Suppressed,1,20,0.05,deseasonalized_only
+Savannas,historic drought,Dry / Resilient,Dry / Resilient,12,20,0.6,deseasonalized_only
+Savannas,historic drought,Dry / Resilient,Dry / Stressed,5,20,0.25,deseasonalized_only
+Savannas,historic drought,Dry / Stressed,Wet / Healthy,1,25,0.04,deseasonalized_only
+Savannas,historic drought,Dry / Stressed,Wet / Suppressed,4,25,0.16,deseasonalized_only
+Savannas,historic drought,Dry / Stressed,Dry / Resilient,3,25,0.12,deseasonalized_only
+Savannas,historic drought,Dry / Stressed,Dry / Stressed,17,25,0.68,deseasonalized_only
+Savannas,recent,Wet / Healthy,Wet / Healthy,1,2,0.5,deseasonalized_only
+Savannas,recent,Wet / Healthy,Wet / Suppressed,0,2,0.0,deseasonalized_only
+Savannas,recent,Wet / Healthy,Dry / Resilient,0,2,0.0,deseasonalized_only
+Savannas,recent,Wet / Healthy,Dry / Stressed,1,2,0.5,deseasonalized_only
+Savannas,recent,Wet / Suppressed,Wet / Healthy,1,11,0.09090909090909091,deseasonalized_only
+Savannas,recent,Wet / Suppressed,Wet / Suppressed,6,11,0.5454545454545454,deseasonalized_only
+Savannas,recent,Wet / Suppressed,Dry / Resilient,0,11,0.0,deseasonalized_only
+Savannas,recent,Wet / Suppressed,Dry / Stressed,4,11,0.36363636363636365,deseasonalized_only
+Savannas,recent,Dry / Resilient,Wet / Healthy,0,6,0.0,deseasonalized_only
+Savannas,recent,Dry / Resilient,Wet / Suppressed,0,6,0.0,deseasonalized_only
+Savannas,recent,Dry / Resilient,Dry / Resilient,3,6,0.5,deseasonalized_only
+Savannas,recent,Dry / Resilient,Dry / Stressed,3,6,0.5,deseasonalized_only
+Savannas,recent,Dry / Stressed,Wet / Healthy,0,40,0.0,deseasonalized_only
+Savannas,recent,Dry / Stressed,Wet / Suppressed,5,40,0.125,deseasonalized_only
+Savannas,recent,Dry / Stressed,Dry / Resilient,2,40,0.05,deseasonalized_only
+Savannas,recent,Dry / Stressed,Dry / Stressed,33,40,0.825,deseasonalized_only
+Shrublands,all,Wet / Healthy,Wet / Healthy,67,95,0.7052631578947368,deseasonalized_only
+Shrublands,all,Wet / Healthy,Wet / Suppressed,2,95,0.021052631578947368,deseasonalized_only
+Shrublands,all,Wet / Healthy,Dry / Resilient,21,95,0.22105263157894736,deseasonalized_only
+Shrublands,all,Wet / Healthy,Dry / Stressed,5,95,0.05263157894736842,deseasonalized_only
+Shrublands,all,Wet / Suppressed,Wet / Healthy,10,49,0.20408163265306123,deseasonalized_only
+Shrublands,all,Wet / Suppressed,Wet / Suppressed,20,49,0.40816326530612246,deseasonalized_only
+Shrublands,all,Wet / Suppressed,Dry / Resilient,5,49,0.10204081632653061,deseasonalized_only
+Shrublands,all,Wet / Suppressed,Dry / Stressed,14,49,0.2857142857142857,deseasonalized_only
+Shrublands,all,Dry / Resilient,Wet / Healthy,16,49,0.32653061224489793,deseasonalized_only
+Shrublands,all,Dry / Resilient,Wet / Suppressed,3,49,0.061224489795918366,deseasonalized_only
+Shrublands,all,Dry / Resilient,Dry / Resilient,22,49,0.4489795918367347,deseasonalized_only
+Shrublands,all,Dry / Resilient,Dry / Stressed,8,49,0.16326530612244897,deseasonalized_only
+Shrublands,all,Dry / Stressed,Wet / Healthy,2,94,0.02127659574468085,deseasonalized_only
+Shrublands,all,Dry / Stressed,Wet / Suppressed,24,94,0.2553191489361702,deseasonalized_only
+Shrublands,all,Dry / Stressed,Dry / Resilient,1,94,0.010638297872340425,deseasonalized_only
+Shrublands,all,Dry / Stressed,Dry / Stressed,67,94,0.7127659574468085,deseasonalized_only
+Shrublands,baseline,Wet / Healthy,Wet / Healthy,56,70,0.8,deseasonalized_only
+Shrublands,baseline,Wet / Healthy,Wet / Suppressed,2,70,0.02857142857142857,deseasonalized_only
+Shrublands,baseline,Wet / Healthy,Dry / Resilient,10,70,0.14285714285714285,deseasonalized_only
+Shrublands,baseline,Wet / Healthy,Dry / Stressed,2,70,0.02857142857142857,deseasonalized_only
+Shrublands,baseline,Wet / Suppressed,Wet / Healthy,6,26,0.23076923076923078,deseasonalized_only
+Shrublands,baseline,Wet / Suppressed,Wet / Suppressed,13,26,0.5,deseasonalized_only
+Shrublands,baseline,Wet / Suppressed,Dry / Resilient,3,26,0.11538461538461539,deseasonalized_only
+Shrublands,baseline,Wet / Suppressed,Dry / Stressed,4,26,0.15384615384615385,deseasonalized_only
+Shrublands,baseline,Dry / Resilient,Wet / Healthy,8,16,0.5,deseasonalized_only
+Shrublands,baseline,Dry / Resilient,Wet / Suppressed,2,16,0.125,deseasonalized_only
+Shrublands,baseline,Dry / Resilient,Dry / Resilient,2,16,0.125,deseasonalized_only
+Shrublands,baseline,Dry / Resilient,Dry / Stressed,4,16,0.25,deseasonalized_only
+Shrublands,baseline,Dry / Stressed,Wet / Healthy,1,19,0.05263157894736842,deseasonalized_only
+Shrublands,baseline,Dry / Stressed,Wet / Suppressed,9,19,0.47368421052631576,deseasonalized_only
+Shrublands,baseline,Dry / Stressed,Dry / Resilient,1,19,0.05263157894736842,deseasonalized_only
+Shrublands,baseline,Dry / Stressed,Dry / Stressed,8,19,0.42105263157894735,deseasonalized_only
+Shrublands,historic drought,Wet / Healthy,Wet / Healthy,1,2,0.5,deseasonalized_only
+Shrublands,historic drought,Wet / Healthy,Wet / Suppressed,0,2,0.0,deseasonalized_only
+Shrublands,historic drought,Wet / Healthy,Dry / Resilient,0,2,0.0,deseasonalized_only
+Shrublands,historic drought,Wet / Healthy,Dry / Stressed,1,2,0.5,deseasonalized_only
+Shrublands,historic drought,Wet / Suppressed,Wet / Healthy,1,17,0.058823529411764705,deseasonalized_only
+Shrublands,historic drought,Wet / Suppressed,Wet / Suppressed,6,17,0.35294117647058826,deseasonalized_only
+Shrublands,historic drought,Wet / Suppressed,Dry / Resilient,2,17,0.11764705882352941,deseasonalized_only
+Shrublands,historic drought,Wet / Suppressed,Dry / Stressed,8,17,0.47058823529411764,deseasonalized_only
+Shrublands,historic drought,Dry / Resilient,Wet / Healthy,0,4,0.0,deseasonalized_only
+Shrublands,historic drought,Dry / Resilient,Wet / Suppressed,0,4,0.0,deseasonalized_only
+Shrublands,historic drought,Dry / Resilient,Dry / Resilient,2,4,0.5,deseasonalized_only
+Shrublands,historic drought,Dry / Resilient,Dry / Stressed,2,4,0.5,deseasonalized_only
+Shrublands,historic drought,Dry / Stressed,Wet / Healthy,0,36,0.0,deseasonalized_only
+Shrublands,historic drought,Dry / Stressed,Wet / Suppressed,11,36,0.3055555555555556,deseasonalized_only
+Shrublands,historic drought,Dry / Stressed,Dry / Resilient,0,36,0.0,deseasonalized_only
+Shrublands,historic drought,Dry / Stressed,Dry / Stressed,25,36,0.6944444444444444,deseasonalized_only
+Shrublands,recent,Wet / Healthy,Wet / Healthy,6,13,0.46153846153846156,deseasonalized_only
+Shrublands,recent,Wet / Healthy,Wet / Suppressed,0,13,0.0,deseasonalized_only
+Shrublands,recent,Wet / Healthy,Dry / Resilient,6,13,0.46153846153846156,deseasonalized_only
+Shrublands,recent,Wet / Healthy,Dry / Stressed,1,13,0.07692307692307693,deseasonalized_only
+Shrublands,recent,Wet / Suppressed,Wet / Healthy,2,4,0.5,deseasonalized_only
+Shrublands,recent,Wet / Suppressed,Wet / Suppressed,1,4,0.25,deseasonalized_only
+Shrublands,recent,Wet / Suppressed,Dry / Resilient,0,4,0.0,deseasonalized_only
+Shrublands,recent,Wet / Suppressed,Dry / Stressed,1,4,0.25,deseasonalized_only
+Shrublands,recent,Dry / Resilient,Wet / Healthy,5,17,0.29411764705882354,deseasonalized_only
+Shrublands,recent,Dry / Resilient,Wet / Suppressed,1,17,0.058823529411764705,deseasonalized_only
+Shrublands,recent,Dry / Resilient,Dry / Resilient,10,17,0.5882352941176471,deseasonalized_only
+Shrublands,recent,Dry / Resilient,Dry / Stressed,1,17,0.058823529411764705,deseasonalized_only
+Shrublands,recent,Dry / Stressed,Wet / Healthy,0,25,0.0,deseasonalized_only
+Shrublands,recent,Dry / Stressed,Wet / Suppressed,2,25,0.08,deseasonalized_only
+Shrublands,recent,Dry / Stressed,Dry / Resilient,0,25,0.0,deseasonalized_only
+Shrublands,recent,Dry / Stressed,Dry / Stressed,23,25,0.92,deseasonalized_only

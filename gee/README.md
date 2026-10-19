@@ -10,11 +10,11 @@ Everything after the export is done in Python (`../src`).
 | `modis_mod13q1_ndvi_monthly_5km.js` | `MODIS/061/MOD13Q1` | monthly mean NDVI, 5 km |
 | `modis_mod13q1_nirv_monthly_5km.js` | `MODIS/061/MOD13Q1` | monthly mean NIRv (NDVI × NIR reflectance), 5 km |
 | `modis_mod09a1_gndvi_monthly_5km.js` | `MODIS/061/MOD09A1` | monthly mean GNDVI, 5 km |
-| `modis_myd21c1_lst_monthly.js` | `MODIS/061/MYD21C1` | monthly mean daytime LST (QC-filtered) |
+| `modis_myd21c1_lst_monthly.js` | `MODIS/061/MYD21C1` (`LST_Day`, `QC_Day`) | monthly mean daytime LST in °C (`LST_Day − 273.15`). Pixel QA keeps `QC_Day` bits 0–1 < 2. A daily scene is dropped when more than 30 % of the California pixels with a valid `LST_Day` value fail that QA test (`1 − good/valid > 0.30`); this is a QA-failure fraction among retrieved pixels, not a direct cloud-cover measurement. Exports analysed: 2003-01 to 2024-12 |
 | `modis_myd21c1_lst_monthly_mcd12q1_variant.js` | `MODIS/061/MYD21C1` + `MCD12Q1` | variant of the LST export that also reads land cover; kept because the exported LST folder is shared and it could not be proven which of the two produced the final files |
 | `gridmet_spei1_monthly_5km.js` | `GRIDMET/DROUGHT` (`spei30d`) | monthly SPEI-1, 5 km |
 | `gridmet_vpdmax_monthly_5km.js` | `IDAHO_EPSCOR/GRIDMET` (`vpd`) | monthly maximum VPD, 5 km |
-| `grace_mascon_tws_monthly.js` | `NASA/GRACE/MASS_GRIDS_V04/MASCON` (`lwe_thickness`) | monthly TWS anomaly (exported at 100 km scale) |
+| `grace_mascon_tws_monthly.js` | `NASA/GRACE/MASS_GRIDS_V04/MASCON` (`lwe_thickness`, JPL RL06 mascons) | monthly TWS anomaly. Source grid 0.5°; effective mascon support ~3° (~300 km); exported at 100 km scale (0.898° grid in the analysed rasters). Neither the source grid nor the export scale adds independent fine-scale hydrologic information |
 | `modis_mod17a2h_gpp_monthly_5km_2022_2024.js` | `MODIS/061/MOD17A2H` | monthly GPP total 2022–2024 (extends FLUXCOM) |
 
 Not in Earth Engine: **GOSIF** and **FLUXCOM GPP** were downloaded from their providers and processed in Python

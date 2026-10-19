@@ -1,35 +1,27 @@
-Copyright and License Notice
+MIT License
 
-Copyright © 2025 Aria Ahmadi. All Rights Reserved.
+Copyright (c) 2025-2026 Aria Ahmadi
 
-Terms of Use (Pre-Publication)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This repository contains research code for an academic publication currently under review.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Restrictions:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-1. No Redistribution: You may not copy, modify, distribute, or create derivative works from this code without explicit written permission from the copyright holder.
-
-2. Academic Use Only: This code is shared for review and evaluation purposes only (e.g., for job applications, academic review).
-
-3. No Commercial Use: Commercial use of this code or methodology is strictly prohibited without written permission.
-
-4. Citation Required: If you reference this work in any academic context, proper attribution must be given.
-
-Future License:
-
-Upon publication of the associated research paper, this repository will be released under the MIT License, allowing free use with attribution.
-
-Contact:
-
-For permissions or inquiries:
-- Email: Ariaahmadi2155@gmail.com
-- Institution: University of Tehran
-
-Disclaimer:
-
-THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
-
-Note: This license will be updated to MIT License following publication of the associated research article.
-
-Date: October 2025
+---------------------------------------------------------------------------
+Scope: this license covers the code and documentation in this repository only.
+It does not apply to the third-party datasets used by the code (MODIS, gridMET,
+GRACE/GRACE-FO, GOSIF, FLUXCOM-X), which are not redistributed here and remain
+subject to their providers' own terms.

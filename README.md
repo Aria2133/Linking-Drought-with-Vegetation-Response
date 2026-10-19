@@ -14,28 +14,36 @@ flowchart LR
     D --> D1[EWBI forcing composite]
     D --> D2[NIRv drought response<br/>& severe-response area]
     D --> D3[Correlation & lag analysis]
-    D --> D4[Descriptive forcing–response<br/>state transitions]
+    D --> D4[Descriptive forcing–response classes<br/>& observed transition proportions]
 
-    C --> E[Target-specific forecasting]
+    C --> E[Target-specific univariate forecasting]
     E --> E1[12-month history of the target]
     E1 --> E2[1-month-ahead prediction]
-    E2 --> E3[LSTM / BiLSTM / TCN / N-BEATS / N-HiTS / XGBoost<br/>+ RBF-ε-SVR + 3 baselines]
+    E2 --> E3[LSTM / BiLSTM / TCN / N-BEATS / N-HiTS / XGBoost<br/>+ RBF-ε-SVR + 3 simple baselines]
     E3 --> F[4 expanding rolling-origin test windows]
-    F --> G[Paired model comparison<br/>over 36 tasks]
+    F --> G[Paired comparison over 36 tasks<br/>Friedman · Wilcoxon · Holm]
 ```
 
 ## At a glance
 
 | | |
 |---|---|
-| **Region / period** | California, monthly, 2001–2024 (baseline 2001–2011; drought periods 2012–2016 and 2020–2024) |
+| **Region / period** | California, monthly, 2001–2024 (baseline 2001–2011; focal periods 2012–2016 and 2020–2024) |
 | **Land types** | Grasslands, Natural Forests, Savannas, Shrublands (MODIS MCD12Q1 2021) |
-| **Vegetation / productivity** | NDVI, GNDVI, NIRv, GOSIF/SIF, GPP |
+| **Vegetation / productivity** | NDVI, GNDVI, NIRv, GOSIF/SIF, GPP (FLUXCOM-X-BASE 2001–2021; MOD17A2H 2022–2024) |
 | **Hydroclimate / thermal** | SPEI-1, GRACE/GRACE-FO TWS, VPDmax, LST |
-| **EWBI** | mean of +SPEI-1, +TWS, −VPDmax, −LST, each standardised over time against its 2001–2011 land-type baseline; a relative forcing composite, not a calibrated drought-intensity index |
-| **Forecasting** | univariate per target (9 targets × 4 land types = 36 tasks); 12-month input window; 1 month ahead |
-| **Evaluation** | expanding rolling origin, test windows 2017–18, 2019–20, 2021–22, 2023–24; R² and nRMSE |
-| **Pixels** | per task, pixels with ≥ 30 % valid months before 2022 and in 2024; at most 100 drawn at random (seed 42), reused across models and folds |
+| **EWBI** | equal-weight mean of +SPEI-1, +TWS, −VPDmax, −LST; each land-type monthly series is deseasonalised and standardised **over time** against its 2001–2011 baseline (no spatial standardisation). A relative, baseline-referenced, multi-timescale forcing composite — not a calibrated drought-intensity index |
+| **States** | descriptive median-based EWBI × NIRv classes; empirical month-to-month transition proportions (not a fitted Markov model), compared with an autocorrelation-preserving IAAFT null |
+| **Forecasting** | univariate per target: each of 9 targets × 4 land types (36 tasks) is predicted 1 month ahead from its own previous 12 months |
+| **Evaluation** | expanding rolling origin, test windows 2017–18, 2019–20, 2021–22, 2023–24; R² and nRMSE; training-only preprocessing |
+| **BiLSTM** | first recurrent layer bidirectional for all targets; 128 units per direction (NDVI, GNDVI, NIRv, GOSIF/SIF, GPP, LST, VPDmax), 150 (TWS), 200 (SPEI-1) |
+| **Pixels** | per task, minimum finite-month counts of floor(0.30 × N) before 2022 (75/252) and in 2024 (3/12); at most 100 drawn at random (seed 42), reused across models and folds |
+| **Inference** | 36 target × land-type tasks as paired units (pixels are not replicates); Friedman test, then two-sided Wilcoxon signed-rank tests with Holm correction |
+
+> **Open provenance item (TWS × BiLSTM).** In the current Figure 7 source table, 4 of the 216 model–task cells (BiLSTM for TWS,
+> one per land type) carry values from the supplementary 18-month TWS configuration rather than the common 12-month run.
+> Substituting the common-benchmark run leaves all win counts and all Friedman/Wilcoxon–Holm conclusions unchanged
+> (details in [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)).
 
 ## Repository map
 
@@ -43,32 +51,43 @@ flowchart LR
 |---|---|
 | [`gee/`](gee) | Google Earth Engine (JavaScript) export scripts |
 | [`src/preprocessing/`](src/preprocessing) | Python: land-type masking, monthly land-type series, anomalies |
-| [`src/ecological/`](src/ecological) | EWBI, states and transitions, NIRv response, gap filling, correlations, sensitivity analyses |
+| [`src/ecological/`](src/ecological) | EWBI, states and transitions, NIRv response, gap filling, correlations, GPP and sensitivity analyses |
 | [`src/forecasting/`](src/forecasting) | pixel screening, folds, baselines, models, SVR, corrected BiLSTM |
+| [`src/statistics/`](src/statistics) | model-comparison tests; IAAFT state-transition null |
 | [`src/figures/`](src/figures), [`src/tables/`](src/tables) | figure and table scripts |
+| [`results/`](results) | compact final source tables and statistical outputs (no raster data) |
 | [`config/`](config) | hyperparameters, folds, seeds, pixel-selection rule and counts |
 | [`environment/`](environment) | pinned package versions |
 | [`data_access/`](data_access) | data sources and how to obtain them |
-| [`docs/`](docs) | [workflow](docs/WORKFLOW.md), [reproducibility](docs/REPRODUCIBILITY.md), [data availability](docs/DATA_AVAILABILITY.md), [file provenance](docs/FILE_PROVENANCE.md) |
+| [`docs/`](docs) | [workflow](docs/WORKFLOW.md), [reproducibility](docs/REPRODUCIBILITY.md), [data availability](docs/DATA_AVAILABILITY.md), [file provenance](docs/FILE_PROVENANCE.md), [QC report](docs/REPOSITORY_QC_REPORT.md) |
 
-## Figures and tables
+## Figures
 
-| Item | Script |
+| Figure | Script |
 |---|---|
-| Fig. 1 land types | `src/figures/fig01_landtype_map.py` |
-| Fig. 2 workflow | diagram (not code-generated) |
-| Figs. 3–4 standardised anomalies | `src/figures/fig03_fig04_anomaly_timeseries.py` |
-| Figs. 5–6 correlations, cross-correlation | `src/preprocessing/02_landtype_series/03_previous_gndvi_series_and_figures_5_6.py`, `src/figures/fig06_cross_correlation.py` |
-| Fig. 7 forecast skill (polar) | `src/figures/fig07_render_corrected_polar.py` |
-| Fig. 8 NIRv change maps | `src/figures/fig08_nirv_change_maps.py` |
-| Fig. 9 state transitions | `src/figures/fig09_transition_matrices.py` |
-| Figs. S1–S10 | `src/figures/figS01_*.py` … `figS10_*.py` (S2–S5 in one script) |
-| Tables 3–4 model rankings / predictability | `src/tables/rebuild_corrected_tables_3_4.py` |
-| Hyperparameters, folds, pixel counts | `config/` |
+| 1 Land types | `src/figures/fig01_landtype_map.py` |
+| 2 Workflow | diagram (not code-generated) |
+| 3–4 Standardised anomalies | `src/figures/fig03_fig04_anomaly_timeseries.py` |
+| 5 Raw monthly correlations (exact YYYY-MM pairs) | `src/ecological/correlations/figure5_date_aligned_correlations.py`; rendering `src/figures/refined_figures_fig5_S4_S5_S6_S7_S9_null.py` |
+| 6 Cross-correlation functions | `src/figures/fig06_cross_correlation.py` (values: `ccf_calculate` in `src/ecological/correlations/cross_correlation_and_submitted_fig5_logic.py`) |
+| 7 Forecast skill (mean ± SD per task; descriptive best-model counts) | `src/figures/fig07_point_errorbar_best_counts.py` ← `results/forecasting/figure7_final_task_metrics.csv` |
+| 8 NIRv change maps | `src/figures/fig08_nirv_change_maps.py` |
+| 9 Observed transition proportions | `src/figures/fig09_transition_matrices.py` |
+| Supplementary: TWS support / resampling | `src/figures/figS01_tws_resampling.py` |
+| Supplementary: gap filling; detrending | `src/figures/figS02_S03_S04_S05_supplementary.py` (`build_s4`, `build_s5`) |
+| Supplementary: EWBI components & weighting; period-stratified responses; state-classification alternatives | `src/ecological/sensitivity/harmonized_S4_S5_S6.py`; rendering `src/figures/refined_figures_fig5_S4_S5_S6_S7_S9_null.py` |
+| Supplementary: baselines and folds; forecast-derived EWBI | `src/forecasting/corrected_bilstm/reconcile_corrected_bilstm_figures.py`; rendering as above |
+| Supplementary: forecast heatmaps | `src/figures/figS08_forecast_heatmaps.py` |
+| Supplementary: NIRv threshold sensitivity | `src/figures/figS10_nirv_threshold_sensitivity.py` |
+| Supplementary: Figure-5 deseasonalised sensitivity; IAAFT null | `src/figures/refined_figures_fig5_S4_S5_S6_S7_S9_null.py`, `src/figures/fig09_transition_matrices.py` |
+
+Tables: hyperparameters and folds — `config/`; forecast rankings / predictability, NIRv response tables — `src/tables/verify_tables_2_4_5_6.py`
+and `src/tables/rebuild_corrected_tables_3_4.py`; pairwise statistics — `src/tables/forecast_pairwise_statistics_table.py`;
+EWBI temporal variation — `src/tables/ewbi_temporal_variation_table.py`; pixel counts — `config/pixel_selection_counts.csv`.
 
 ## Data
 
-No data are included. All source datasets are public ([`data_access/data_sources.csv`](data_access/data_sources.csv)).
+No data are included. Source datasets are public and listed in [`data_access/data_sources.csv`](data_access/data_sources.csv).
 Processed and derived datasets are available from the corresponding author on reasonable request
 ([`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md)).
 
@@ -76,10 +95,12 @@ Processed and derived datasets are available from the corresponding author on re
 
 ```bash
 pip install -r environment/requirements.txt
+python src/statistics/forecast_model_comparison.py      # runs from bundled results/ tables
+python src/statistics/state_transition_iaaft_null.py    # runs from bundled results/ tables
 ```
-Then follow [`docs/WORKFLOW.md`](docs/WORKFLOW.md). Scripts contain path placeholders (`<DATA_ROOT>`, `<PROJECT_ROOT>`) to set
-before running. Notes on configurations and known gaps: [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
+Everything else follows [`docs/WORKFLOW.md`](docs/WORKFLOW.md); scripts that read raster data contain path placeholders
+(`<DATA_ROOT>`, `<PROJECT_ROOT>`) to set first. Configuration notes and known gaps: [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
 
 ## License
 
-See [LICENSE](LICENSE).
+Code and documentation: [MIT](LICENSE). Third-party datasets keep their providers' terms and are not redistributed.
