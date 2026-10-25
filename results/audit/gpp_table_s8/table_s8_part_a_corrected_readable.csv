@@ -1,0 +1,25 @@
+﻿Land type,Quantity,"FLUXCOM only, 2001–2021 (main; = Figure 5 for correlations)",FLUXCOM 2001–2021 + MOD17 2023–2024 (2022 excluded),Difference (with MOD17 − FLUXCOM only),Nominal p < 0.05 status changed
+Grasslands,GPP vs NIRv,0.714 (p = 1.33e-40; N = 252),0.706 (p = 5.34e-43; N = 276),-0.008,No
+Grasslands,GPP vs NDVI,0.483 (p = 3.93e-16; N = 252),0.490 (p = 4.72e-18; N = 276),+0.007,No
+Grasslands,GPP vs GNDVI,0.635 (p = 6.57e-30; N = 252),0.614 (p = 5.53e-30; N = 276),-0.022,No
+Grasslands,GPP vs GOSIF/SIF,0.978 (p = 2.37e-171; N = 252),0.954 (p = 7.56e-146; N = 276),-0.023,No
+Grasslands,Deseasonalized EWBI vs GPP anomaly,0.465 (p = 6.31e-15; N = 252),0.397 (p = 7.03e-12; N = 276),-0.068,No
+Grasslands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.010 (p = 0.045; N = 252),0.003 (p = 0.723; N = 276),+0.013,Yes
+Natural Forests,GPP vs NIRv,0.941 (p = 1.28e-119; N = 252),0.928 (p = 1.08e-119; N = 276),-0.013,No
+Natural Forests,GPP vs NDVI,0.478 (p = 8.86e-16; N = 252),0.476 (p = 4.81e-17; N = 276),-0.001,No
+Natural Forests,GPP vs GNDVI,0.547 (p = 4.22e-21; N = 252),0.546 (p = 6.84e-23; N = 276),-0.001,No
+Natural Forests,GPP vs GOSIF/SIF,0.977 (p = 6.24e-169; N = 252),0.963 (p = 1.17e-157; N = 276),-0.014,No
+Natural Forests,Deseasonalized EWBI vs GPP anomaly,-0.093 (p = 0.143; N = 252),-0.036 (p = 0.551; N = 276),+0.057,No
+Natural Forests,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.012 (p = 0.146; N = 252),-0.017 (p = 0.025; N = 276),-0.005,Yes
+Savannas,GPP vs NIRv,0.936 (p = 5.38e-115; N = 252),0.916 (p = 5.84e-111; N = 276),-0.019,No
+Savannas,GPP vs NDVI,0.453 (p = 3.52e-14; N = 252),0.446 (p = 7.16e-15; N = 276),-0.008,No
+Savannas,GPP vs GNDVI,0.439 (p = 2.77e-13; N = 252),0.429 (p = 8.58e-14; N = 276),-0.010,No
+Savannas,GPP vs GOSIF/SIF,0.965 (p = 4.64e-148; N = 252),0.945 (p = 1.10e-134; N = 276),-0.021,No
+Savannas,Deseasonalized EWBI vs GPP anomaly,0.263 (p = 2.28e-05; N = 252),0.195 (p = 0.001; N = 276),-0.068,No
+Savannas,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.012 (p = 0.031; N = 252),-0.008 (p = 0.179; N = 276),+0.004,Yes
+Shrublands,GPP vs NIRv,0.693 (p = 1.93e-37; N = 252),0.684 (p = 2.07e-39; N = 276),-0.009,No
+Shrublands,GPP vs NDVI,0.223 (p = 3.69e-04; N = 252),0.301 (p = 3.51e-07; N = 276),+0.078,No
+Shrublands,GPP vs GNDVI,0.396 (p = 6.55e-11; N = 252),0.435 (p = 3.64e-14; N = 276),+0.039,No
+Shrublands,GPP vs GOSIF/SIF,0.903 (p = 6.16e-94; N = 252),0.825 (p = 1.01e-69; N = 276),-0.079,No
+Shrublands,Deseasonalized EWBI vs GPP anomaly,0.492 (p = 9.72e-17; N = 252),0.341 (p = 6.11e-09; N = 276),-0.151,No
+Shrublands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.005 (p = 0.095; N = 252),0.007 (p = 0.273; N = 276),+0.011,No

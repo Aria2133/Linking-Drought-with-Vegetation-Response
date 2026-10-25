@@ -1,0 +1,16 @@
+check,passed,detail
+2022 MOD17 exports are duplicated in every scope,True,"[{'scope': 'California-wide export', 'year': 2022, 'files': 12, 'distinct': 3}, {'scope': 'land type: Grasslands', 'year': 2022, 'files': 12, 'distinct': 3}, {'scope': 'land type: Natural Forests', 'year': 2022, 'files': 12, 'distinct': 3}, {'scope': 'land type: Savannas', 'year': 2022, 'files': 12, 'distinct': 3}, {'scope': 'land type: Shrublands', 'year': 2022, 'files': 12, 'distinct': 3}]"
+2023 and 2024 MOD17 exports are all distinct,True,12 distinct per year and scope
+FLUXCOM GPP (2001-2021) stored in gC m-2 d-1 without conversion,True,
+GPP analysed values were not gap-filled,True,was_gap_filled all False
+unconverted MOD17 months identified,True,"[{'date': Timestamp('2023-05-01 00:00:00'), 'land_type': 'Natural Forests', 'raw_value': 0.2361007253312949}, {'date': Timestamp('2023-06-01 00:00:00'), 'land_type': 'Natural Forests', 'raw_value': 0.232393674369328}]"
+repaired months lie within the 2023-2024 MOD17 range of the same land type,True,
+main analysis ends 2021-12 with no MOD17 months,True,
+sensitivity excludes every 2022 month and includes 2023-2024,True,
+main-analysis GPP correlations equal the accepted Figure 5 source (unrounded),True,"16 cells, max |diff| = 1.11e-16"
+main-analysis sample sizes equal Figure 5 pairwise N,True,[252]
+old Table S8 reproduced exactly from the same inputs,True,"48 rows, max |diff| = 1.11e-16"
+accepted Figure 5 image agrees with its source at displayed precision (all 144 off-diagonal cells),True,144 cells; mismatches: []
+difference column = with-MOD17 minus FLUXCOM-only,True,
+significance-change flags recomputed from nominal p,True,
+coefficients and sample sizes reproducible (re-read),True,

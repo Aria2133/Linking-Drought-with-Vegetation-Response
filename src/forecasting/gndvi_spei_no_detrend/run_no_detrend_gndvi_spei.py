@@ -46,6 +46,10 @@ OLD_PREPROCESSING_MODE = "reviewer_mode_b"
 SCALING = "monthwise_z"
 MODE_NAME = "Mode_B_rolling_origin"
 
+# HISTORICAL PREPROCESSING BOUNDARY (kept intentionally): preprocessing is fitted through the end of the internal-
+# validation window ("legacy_through_validation", see src/forecasting/fold_boundaries.py). These folds produced the published GNDVI and
+# SPEI-1 benchmark rows; change preprocessing_fit_end to train_end for a fit-subset rerun.
+PREPROCESSING_BOUNDARY = "legacy_through_validation"
 FOLDS = [
     {"mode": MODE_NAME, "fold": 1, "train_end": 201412, "preprocessing_fit_end": 201612, "validation_start": 201501, "validation_end": 201612, "test_start": 201701, "test_end": 201812},
     {"mode": MODE_NAME, "fold": 2, "train_end": 201612, "preprocessing_fit_end": 201812, "validation_start": 201701, "validation_end": 201812, "test_start": 201901, "test_end": 202012},

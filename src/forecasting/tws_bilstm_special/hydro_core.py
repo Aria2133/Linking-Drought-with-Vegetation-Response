@@ -43,6 +43,9 @@ def previous_month(value: int, count: int = 1) -> int:
     return (absolute // 12) * 100 + (absolute % 12) + 1
 
 
+# HISTORICAL PREPROCESSING BOUNDARY (kept intentionally): preprocessing is fitted through the end of the internal-
+# validation window ("legacy_through_validation", see src/forecasting/fold_boundaries.py). This package is the supplementary 18-month
+# hydroclimate sensitivity; it is NOT part of the main common 12-month benchmark (see config/forecast_result_registry.csv).
 def fold_specs() -> List[Dict]:
     specs = []
     for fold in ROLLING_FOLDS:

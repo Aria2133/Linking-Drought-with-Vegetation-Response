@@ -1,0 +1,25 @@
+﻿Land type,Quantity,"FLUXCOM only, 2001–2021 (main)",FLUXCOM 2001–2021 + MOD17 2022–2024,Difference,Nominal p < 0.05 status changed
+Grasslands,GPP vs NIRv,0.714 (p = 1.33e-40),0.699 (p = 1.41e-43),-0.015,No
+Grasslands,GPP vs NDVI,0.483 (p = 3.93e-16),0.483 (p = 2.82e-18),+0.001,No
+Grasslands,GPP vs GNDVI,0.635 (p = 6.57e-30),0.613 (p = 4.34e-31),-0.023,No
+Grasslands,GPP vs GOSIF/SIF,0.978 (p = 2.37e-171),0.948 (p = 1.58e-144),-0.029,No
+Grasslands,Deseasonalized EWBI vs GPP anomaly,0.465 (p = 6.31e-15),0.324 (p = 1.76e-08),-0.141,No
+Grasslands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.010 (p = 0.045),0.004 (p = 0.584),+0.014,Yes
+Natural Forests,GPP vs NIRv,0.941 (p = 1.28e-119),0.917 (p = 5.65e-116),-0.024,No
+Natural Forests,GPP vs NDVI,0.478 (p = 8.86e-16),0.480 (p = 5.26e-18),+0.002,No
+Natural Forests,GPP vs GNDVI,0.547 (p = 4.22e-21),0.545 (p = 1.19e-23),-0.003,No
+Natural Forests,GPP vs GOSIF/SIF,0.977 (p = 6.24e-169),0.956 (p = 1.82e-154),-0.021,No
+Natural Forests,Deseasonalized EWBI vs GPP anomaly,-0.093 (p = 0.143),-0.023 (p = 0.694),+0.069,No
+Natural Forests,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.012 (p = 0.146),-0.018 (p = 0.010),-0.006,Yes
+Savannas,GPP vs NIRv,0.936 (p = 5.38e-115),0.909 (p = 2.15e-110),-0.027,No
+Savannas,GPP vs NDVI,0.453 (p = 3.52e-14),0.453 (p = 5.52e-16),-0.000,No
+Savannas,GPP vs GNDVI,0.439 (p = 2.77e-13),0.434 (p = 1.21e-14),-0.005,No
+Savannas,GPP vs GOSIF/SIF,0.965 (p = 4.64e-148),0.939 (p = 1.23e-134),-0.026,No
+Savannas,Deseasonalized EWBI vs GPP anomaly,0.263 (p = 2.28e-05),0.169 (p = 0.004),-0.094,No
+Savannas,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.012 (p = 0.031),-0.009 (p = 0.113),+0.003,Yes
+Shrublands,GPP vs NIRv,0.693 (p = 1.93e-37),0.655 (p = 1.03e-36),-0.038,No
+Shrublands,GPP vs NDVI,0.223 (p = 3.69e-04),0.271 (p = 3.02e-06),+0.049,No
+Shrublands,GPP vs GNDVI,0.396 (p = 6.55e-11),0.394 (p = 3.82e-12),-0.002,No
+Shrublands,GPP vs GOSIF/SIF,0.903 (p = 6.16e-94),0.806 (p = 3.89e-67),-0.097,No
+Shrublands,Deseasonalized EWBI vs GPP anomaly,0.492 (p = 9.72e-17),0.248 (p = 2.14e-05),-0.244,No
+Shrublands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",-0.005 (p = 0.095),0.008 (p = 0.157),+0.013,No

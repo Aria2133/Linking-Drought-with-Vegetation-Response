@@ -1,0 +1,9 @@
+configuration_id,role,lookback,preprocessing,scaling,rows,models,targets,seeds,folds
+main_corrected_true_bilstm,main,12,reviewer_mode_b,monthwise_z,96,BiLSTM,GOSIF;GPP;LST;NDVI;NIRv;VPD,42,1;2;3;4
+main_corrected_true_bilstm_gndvi,main,12,reviewer_mode_b_no_detrend,monthwise_z,48,BiLSTM,GNDVI,42;123;2026,1;2;3;4
+main_no_detrend_1seed_spei,main,12,reviewer_mode_b_no_detrend,monthwise_z,48,BiLSTM;N-HiTS;TCN,SPEI,42,1;2;3;4
+main_no_detrend_3seed,main,12,reviewer_mode_b_no_detrend,monthwise_z,288,LSTM;N-BEATS;XGBoost,GNDVI;SPEI,42;123;2026,1;2;3;4
+main_no_detrend_tcn_nhits_gndvi,main,12,reviewer_mode_b_no_detrend,monthwise_z,96,N-HiTS;TCN,GNDVI,42;123;2026,1;2;3;4
+main_reviewer_safe_1seed,main,12,reviewer_mode_b,monthwise_z,224,N-HiTS;TCN,GOSIF;GPP;LST;NDVI;NIRv;TWS;VPD,42,1;2;3;4
+main_reviewer_safe_3seed,main,12,reviewer_mode_b,monthwise_z,1008,LSTM;N-BEATS;XGBoost,GOSIF;GPP;LST;NDVI;NIRv;TWS;VPD,42;123;2026,1;2;3;4
+main_reviewer_safe_bilstm_tws,main,12,reviewer_mode_b,monthwise_z,16,BiLSTM,TWS,42,1;2;3;4

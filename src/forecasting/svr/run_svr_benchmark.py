@@ -237,7 +237,10 @@ def split_by_fold(fold: int) -> dict:
 
 
 def task_array_stem(target: str, land_type: str, fold: int) -> str:
-    return safe_stem(target, land_type, f"fold{int(fold)}")
+    # Cached arrays depend on the preprocessing boundary; legacy keeps its historical cache names.
+    boundary = split_by_fold(fold).get("preprocessing_boundary", "legacy_through_validation")
+    suffix = "" if boundary == "legacy_through_validation" else f"_{boundary}"
+    return safe_stem(target, land_type, f"fold{int(fold)}{suffix}")
 
 
 def task_array_path(target: str, land_type: str, fold: int) -> Path:
@@ -270,13 +273,26 @@ def prepare_and_cache_task_arrays(target: str, land_type: str, fold: int) -> dic
         spec["validation_end"],
         cfg.MAIN_LOOKBACK,
     )
-    refit = build_supervised(prepared, earliest, spec["validation_end"], cfg.MAIN_LOOKBACK)
-    test = build_supervised(prepared, spec["test_start"], spec["test_end"], cfg.MAIN_LOOKBACK)
+    # Final refit on training + validation. Under the fit_subset boundary the preprocessing is refitted through
+    # validation_end for the refit and the outer test only; selection above used core-training preprocessing.
+    refit_fit_end = int(spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"]))
+    if refit_fit_end != int(spec["preprocessing_fit_end"]):
+        prepared_refit = prepare_task(
+            land_type,
+            target,
+            train_end=refit_fit_end,
+            preprocessing_mode=spec["preprocessing_mode"],
+            scaling="monthwise_z",
+        )
+    else:
+        prepared_refit = prepared
+    refit = build_supervised(prepared_refit, earliest, spec["validation_end"], cfg.MAIN_LOOKBACK)
+    test = build_supervised(prepared_refit, spec["test_start"], spec["test_end"], cfg.MAIN_LOOKBACK)
 
     x_train, y_train = valid_xy(train)
     x_validation, y_validation = valid_xy(validation)
     x_refit, y_refit = valid_xy(refit)
-    test_vectors = valid_test_vectors(prepared, test)
+    test_vectors = valid_test_vectors(prepared_refit, test)
     gamma_scale = gamma_scale_from_training(x_train)
 
     np.savez_compressed(
@@ -298,6 +314,7 @@ def prepare_and_cache_task_arrays(target: str, land_type: str, fold: int) -> dic
         "core_training_start": earliest,
         "core_training_end": int(spec["train_end"]),
         "preprocessing_fit_end": int(spec["preprocessing_fit_end"]),
+        "refit_preprocessing_fit_end": refit_fit_end,
         "validation_start": int(spec["validation_start"]),
         "validation_end": int(spec["validation_end"]),
         "outer_test_start": int(spec["test_start"]),

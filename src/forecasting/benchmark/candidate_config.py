@@ -47,6 +47,12 @@ ORIGINAL_MODELS = ["LSTM", "BiLSTM", "TCN", "N-BEATS", "N-HiTS", "XGBoost"]
 BASELINES = ["Persistence", "Seasonal persistence", "Monthly climatology", "SARIMA"]
 SEEDS = [42, 123, 2026]
 MAIN_LOOKBACK = 12
+# Preprocessing boundary for rolling-origin folds (src/forecasting/fold_boundaries.py).
+# "fit_subset": imputation/detrending/scaling fitted on core-training dates only (default for new runs).
+# "legacy_through_validation": fitted through the end of the internal-validation window; reproduces the
+# published benchmark runs (Figure 7, Tables 4-5, statistical comparison). Outputs carry the label in
+# their `preprocessing` column ("reviewer_mode_b_fitsubset" vs "reviewer_mode_b").
+PREPROCESSING_BOUNDARY = "fit_subset"
 MAX_PIXELS = 100
 MIN_VALID_FRACTION = 0.30
 TARGET_CLIP = 4.0

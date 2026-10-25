@@ -1,75 +1,118 @@
 import xarray as xr
 import rasterio
 from rasterio.warp import reproject, Resampling
-from rasterio.enums import Resampling
 import numpy as np
 import os
-from datetime import datetime, timedelta
-import pandas as pd
+import glob
 from rasterio.transform import from_bounds
 import warnings
 
-# Suppress warnings
 warnings.filterwarnings("ignore")
 
-# Install cftime if not available
-try:
-    import cftime
-except ImportError:
-    print("Installing cftime package...")
+
+def install_dependencies():
+    """Install required packages"""
     import subprocess
     import sys
 
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'cftime'])
-    import cftime
+    packages = ['netcdf4', 'h5netcdf']
+    for package in packages:
+        try:
+            __import__(package.replace('-', '_'))
+            print(f"✅ {package} is available")
+        except ImportError:
+            print(f"Installing {package}...")
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
 
-def convert_time_to_datetime(time_values, time_units, calendar='standard'):
-    """Convert NetCDF time values to datetime objects using cftime"""
+def open_netcdf_file(filepath):
+    """Try to open NetCDF file with different engines"""
+    engines = ['netcdf4', 'h5netcdf']
+
+    for engine in engines:
+        try:
+            ds = xr.open_dataset(filepath, engine=engine)
+            print(f"Opened {os.path.basename(filepath)} with {engine}")
+            return ds
+        except Exception as e:
+            print(f"Failed with {engine}: {str(e)[:50]}...")
+            continue
+
+    raise Exception(f"Could not open {filepath} with any engine")
+
+
+def get_gpp_variable(ds):
+    """Find GPP variable in dataset"""
+    for var_name in ds.data_vars.keys():
+        if 'gpp' in var_name.lower():
+            return var_name
+    return None
+
+
+def create_california_mask(lons, lats):
+    """Create a simple mask for California region"""
+    # California boundaries (approximate)
+    ca_bounds = {
+        'lon_min': -124.5, 'lon_max': -114.0,
+        'lat_min': 32.0, 'lat_max': 42.5
+    }
+
+    # Create coordinate meshgrids
+    lon_grid, lat_grid = np.meshgrid(lons, lats)
+
+    # Create California mask
+    ca_mask = ((lon_grid >= ca_bounds['lon_min']) &
+               (lon_grid <= ca_bounds['lon_max']) &
+               (lat_grid >= ca_bounds['lat_min']) &
+               (lat_grid <= ca_bounds['lat_max']))
+
+    return ca_mask
+
+
+def read_landtype_mask(mask_path, target_lons, target_lats):
+    """Read and reproject landtype mask to match GPP grid"""
+    if not os.path.exists(mask_path):
+        return None
+
     try:
-        dates = cftime.num2date(time_values, time_units, calendar=calendar)
-        datetime_list = []
-        for date in dates:
-            if hasattr(date, 'year') and hasattr(date, 'month') and hasattr(date, 'day'):
-                if date.year >= 1900:
-                    datetime_list.append(datetime(date.year, date.month, date.day))
-                else:
-                    datetime_list.append(date)
-            else:
-                datetime_list.append(date)
-        return datetime_list
-    except Exception as e:
-        print(f"Error converting time: {e}")
-        start_year = 1982
-        dates = []
-        for i, time_val in enumerate(time_values):
-            year = start_year + (i // 12)
-            month = (i % 12) + 1
-            dates.append(datetime(year, month, 1))
-        return dates
+        # Create target transform
+        lon_res = abs(target_lons[1] - target_lons[0])
+        lat_res = abs(target_lats[1] - target_lats[0])
 
-
-def read_and_reproject_mask(mask_path, target_transform, target_shape, target_crs='EPSG:4326'):
-    """Read and reproject land type mask to match GPP data grid"""
-    with rasterio.open(mask_path) as src:
-        mask_data = src.read(1)
-        reprojected_mask = np.zeros(target_shape, dtype=np.uint8)
-
-        reproject(
-            source=mask_data,
-            destination=reprojected_mask,
-            src_transform=src.transform,
-            src_crs=src.crs,
-            dst_transform=target_transform,
-            dst_crs=target_crs,
-            resampling=Resampling.nearest
+        target_transform = from_bounds(
+            west=float(target_lons.min() - lon_res / 2),
+            south=float(target_lats.min() - lat_res / 2),
+            east=float(target_lons.max() + lon_res / 2),
+            north=float(target_lats.max() + lat_res / 2),
+            width=len(target_lons),
+            height=len(target_lats)
         )
+
+        # Read and reproject mask
+        with rasterio.open(mask_path) as src:
+            mask_data = src.read(1)
+            reprojected_mask = np.zeros((len(target_lats), len(target_lons)), dtype=np.uint8)
+
+            reproject(
+                source=mask_data,
+                destination=reprojected_mask,
+                src_transform=src.transform,
+                src_crs=src.crs,
+                dst_transform=target_transform,
+                dst_crs='EPSG:4326',
+                resampling=Resampling.nearest
+            )
 
         return reprojected_mask > 0
 
+    except Exception as e:
+        print(f"Error reading mask {mask_path}: {e}")
+        return None
 
-def create_geotiff_transform(lons, lats):
-    """Create affine transform for the GPP data"""
+
+def save_monthly_tiff(data, lons, lats, output_path, metadata=None):
+    """Save data as GeoTIFF"""
+    # Create transform
     lon_res = abs(lons[1] - lons[0])
     lat_res = abs(lats[1] - lats[0])
 
@@ -82,247 +125,172 @@ def create_geotiff_transform(lons, lats):
         height=len(lats)
     )
 
-    return transform
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Save as GeoTIFF
+    with rasterio.open(
+            output_path,
+            'w',
+            driver='GTiff',
+            height=data.shape[0],
+            width=data.shape[1],
+            count=1,
+            dtype=np.float32,
+            crs='EPSG:4326',
+            transform=transform,
+            compress='lzw',
+            nodata=np.nan
+    ) as dst:
+        dst.write(data.astype(np.float32), 1)
+
+        # Add metadata if provided
+        if metadata:
+            dst.update_tags(**metadata)
 
 
-def convert_gpp_units(gpp_data, input_units, output_units):
-    """
-    Convert GPP data from input units to desired output units
+def process_netcdf_file(filepath, mask_files, output_dir):
+    """Process a single NetCDF file"""
+    print(f"\n{'=' * 50}")
+    print(f"Processing: {os.path.basename(filepath)}")
+    print(f"{'=' * 50}")
 
-    Common conversions:
-    - kg C m-2 s-1 to g C m-2 day-1: multiply by 86400 * 1000
-    - kg C m-2 s-1 to kg C m-2 year-1: multiply by 31536000
-    - kg C m-2 s-1 to g C m-2 month-1: multiply by ~2628000 * 1000 (30.4 days avg)
-    """
+    try:
+        # Extract year from filename
+        filename = os.path.basename(filepath)
+        year = int(filename.split('_')[1])
 
-    if input_units == "kg m-2 s-1" and output_units == "g C m-2 day-1":
-        # Convert kg/m2/s to g/m2/day
-        conversion_factor = 86400 * 1000  # seconds per day * g per kg
-        converted_data = gpp_data * conversion_factor
-        return converted_data, conversion_factor
+        # Open NetCDF file
+        ds = open_netcdf_file(filepath)
 
-    elif input_units == "kg m-2 s-1" and output_units == "kg C m-2 year-1":
-        # Convert kg/m2/s to kg/m2/year
-        conversion_factor = 31536000  # seconds per year (365.25 days)
-        converted_data = gpp_data * conversion_factor
-        return converted_data, conversion_factor
+        with ds:
+            # Find GPP variable
+            gpp_var = get_gpp_variable(ds)
+            if not gpp_var:
+                print("No GPP variable found")
+                return 0
 
-    elif input_units == "kg m-2 s-1" and output_units == "g C m-2 month-1":
-        # Convert kg/m2/s to g/m2/month
-        conversion_factor = 2628000 * 1000  # ~30.4 days * 86400 sec * 1000 g/kg
-        converted_data = gpp_data * conversion_factor
-        return converted_data, conversion_factor
+            print(f"GPP variable: {gpp_var}")
+            print(f"Shape: {ds[gpp_var].shape}")
+            print(f"Dimensions: {list(ds[gpp_var].dims)}")
 
-    elif input_units == "kg m-2 s-1" and output_units == "Mg C ha-1 year-1":
-        # Convert kg/m2/s to Mg/ha/year (common in forest literature)
-        # 1 kg/m2 = 10 Mg/ha, so kg/m2/s * 31536000 * 10 = Mg/ha/year
-        conversion_factor = 31536000 * 10
-        converted_data = gpp_data * conversion_factor
-        return converted_data, conversion_factor
-    else:
-        # No conversion needed
-        return gpp_data, 1.0
+            # Get coordinates
+            lons = ds.lon.values
+            lats = ds.lat.values
 
+            print(f"Coordinate ranges:")
+            print(f"  Longitude: {lons.min():.2f} to {lons.max():.2f}")
+            print(f"  Latitude: {lats.min():.2f} to {lats.max():.2f}")
 
-def validate_gpp_values(gpp_data, landtype_name, units="g C m-2 day-1"):
-    """Validate that GPP values are in expected range for given units"""
-    valid_data = gpp_data[~np.isnan(gpp_data)]
+            # Create California mask
+            ca_mask = create_california_mask(lons, lats)
+            ca_pixels = np.sum(ca_mask)
+            print(f"California pixels: {ca_pixels}")
 
-    if len(valid_data) == 0:
-        return False, "No valid data found"
+            if ca_pixels == 0:
+                print("No California pixels found")
+                return 0
 
-    min_val, max_val = np.min(valid_data), np.max(valid_data)
-    mean_val = np.mean(valid_data)
+            # Get GPP data
+            gpp_data = ds[gpp_var].values
+            print(f"GPP data shape: {gpp_data.shape}")
 
-    # Expected ranges based on units
-    if units == "g C m-2 day-1":
-        expected_min = 0.01  # Very low GPP
-        expected_max = 20.0  # Very high GPP (tropical forests)
-        typical_range = (0.1, 10.0)
+            # Units
+            units = ds[gpp_var].attrs.get('units', 'unknown')
+            print(f"Units: {units}")
 
-    elif units == "kg C m-2 year-1":
-        expected_min = 0.01  # Very low GPP
-        expected_max = 7.0  # Very high GPP
-        typical_range = (0.1, 4.0)
+            # Process each land type
+            total_files = 0
 
-    elif units == "g C m-2 month-1":
-        expected_min = 1.0  # Very low GPP
-        expected_max = 600.0  # Very high GPP
-        typical_range = (5.0, 300.0)
+            for landtype_name, mask_path in mask_files.items():
+                print(f"\n--- {landtype_name} ---")
 
-    elif units == "Mg C ha-1 year-1":
-        expected_min = 0.1  # Very low GPP
-        expected_max = 70.0  # Very high GPP
-        typical_range = (1.0, 40.0)
-    else:
-        # Default validation for unknown units
-        expected_min = 1e-12
-        expected_max = 1e6
-        typical_range = (1e-10, 1e6)
+                # Read landtype mask
+                landtype_mask = read_landtype_mask(mask_path, lons, lats)
+                if landtype_mask is None:
+                    print(f"Could not load mask for {landtype_name}")
+                    continue
 
-    # Check if values are in reasonable range
-    if min_val < 0:
-        return False, f"Negative GPP values found (min: {min_val:.3f})"
+                # Combine with California mask
+                combined_mask = ca_mask & landtype_mask
+                valid_pixels = np.sum(combined_mask)
+                print(f"Valid pixels: {valid_pixels}")
 
-    if max_val > expected_max:
-        return False, f"GPP values too high (max: {max_val:.3f}, expected < {expected_max:.3f})"
+                if valid_pixels == 0:
+                    print("No valid pixels for this land type")
+                    continue
 
-    if mean_val < expected_min:
-        return False, f"GPP values too low (mean: {mean_val:.3f}, expected > {expected_min:.3f})"
+                # Create output directory
+                landtype_dir = os.path.join(output_dir, landtype_name)
+                os.makedirs(landtype_dir, exist_ok=True)
 
-    # Values are valid
-    status_msg = f"✓ Values valid: range {min_val:.3f} to {max_val:.3f}, mean {mean_val:.3f} {units}"
+                # Process each month
+                n_months = gpp_data.shape[0] if len(gpp_data.shape) == 3 else 1
 
-    # Add context about the values
-    if typical_range[0] <= mean_val <= typical_range[1]:
-        status_msg += " (typical GPP range)"
-    elif mean_val > typical_range[1]:
-        status_msg += " (high productivity area)"
-    else:
-        status_msg += " (low productivity area)"
+                for month in range(n_months):
+                    # Get monthly data
+                    if len(gpp_data.shape) == 3:
+                        monthly_gpp = gpp_data[month, :, :]
+                    else:
+                        monthly_gpp = gpp_data
+                        month = 0
 
-    return True, status_msg
+                    # Apply mask
+                    masked_gpp = np.full_like(monthly_gpp, np.nan, dtype=np.float32)
+                    masked_gpp[combined_mask] = monthly_gpp[combined_mask]
 
+                    # Check for valid data
+                    valid_data = masked_gpp[~np.isnan(masked_gpp)]
+                    if len(valid_data) == 0:
+                        print(f"No valid data for month {month + 1}")
+                        continue
 
-def clip_gpp_data_for_landtype(gpp_data, land_mask, dates, output_dir, landtype_name,
-                               lons, lats, transform, input_units="kg m-2 s-1", output_units="g C m-2 day-1"):
-    """Clip GPP data using land type mask and save as monthly TIF files with unit conversion"""
+                    # Create filename
+                    output_filename = f"{landtype_name}_GPP_{year}_{month + 1:02d}.tif"
+                    output_path = os.path.join(landtype_dir, output_filename)
 
-    landtype_dir = os.path.join(output_dir, landtype_name)
-    os.makedirs(landtype_dir, exist_ok=True)
+                    # Metadata
+                    metadata = {
+                        'units': units,
+                        'year': str(year),
+                        'month': str(month + 1),
+                        'landtype': landtype_name,
+                        'source': 'FLUXCOM',
+                        'valid_pixels': str(len(valid_data)),
+                        'min_value': f"{np.min(valid_data):.6f}",
+                        'max_value': f"{np.max(valid_data):.6f}",
+                        'mean_value': f"{np.mean(valid_data):.6f}"
+                    }
 
-    print(f"\n{'=' * 60}")
-    print(f"PROCESSING {landtype_name.upper()}")
-    print(f"{'=' * 60}")
-    print(f"Land mask has {np.sum(land_mask)} valid pixels")
-    print(f"Converting from {input_units} to {output_units}")
+                    # Save as TIFF
+                    save_monthly_tiff(masked_gpp, lons, lats, output_path, metadata)
+                    total_files += 1
 
-    # Test first time step and validate values
-    sample_gpp = gpp_data[0]
-    sample_clipped = np.full_like(sample_gpp, np.nan, dtype=np.float64)
-    sample_clipped[land_mask] = sample_gpp[land_mask]
+                # Print summary for this landtype
+                landtype_files = len([f for f in os.listdir(landtype_dir)
+                                      if f.startswith(f"{landtype_name}_GPP_{year}")])
+                print(f"Created {landtype_files} files")
 
-    # Convert units for validation and output
-    converted_sample, conversion_factor = convert_gpp_units(sample_clipped, input_units, output_units)
-    print(f"Conversion factor: {conversion_factor}")
+            return total_files
 
-    # Validate converted values
-    is_valid, validation_msg = validate_gpp_values(converted_sample, landtype_name, output_units)
-    print(f"Validation: {validation_msg}")
-
-    if not is_valid:
-        print(f"❌ ERROR: {validation_msg}")
+    except Exception as e:
+        print(f"Error processing {filepath}: {e}")
         return 0
-
-    # Show before/after example
-    original_mean = np.nanmean(sample_clipped)
-    converted_mean = np.nanmean(converted_sample)
-    print(f"Unit conversion example:")
-    print(f"  Original: {original_mean:.2e} {input_units}")
-    print(f"  Converted: {converted_mean:.3f} {output_units}")
-
-    # Process each time step
-    files_created = 0
-    processing_stats = {
-        'min_values': [],
-        'max_values': [],
-        'mean_values': [],
-        'valid_pixels': []
-    }
-
-    for i, date in enumerate(dates):
-        gpp_timestep = gpp_data[i]
-
-        # Apply land type mask
-        clipped_data = np.full_like(gpp_timestep, np.nan, dtype=np.float64)
-        clipped_data[land_mask] = gpp_timestep[land_mask]
-
-        # Convert units
-        converted_data, _ = convert_gpp_units(clipped_data, input_units, output_units)
-
-        # Collect statistics (on converted data)
-        valid_data = converted_data[~np.isnan(converted_data)]
-        if len(valid_data) > 0:
-            processing_stats['min_values'].append(np.min(valid_data))
-            processing_stats['max_values'].append(np.max(valid_data))
-            processing_stats['mean_values'].append(np.mean(valid_data))
-            processing_stats['valid_pixels'].append(len(valid_data))
-
-        # Create output filename
-        if hasattr(date, 'strftime'):
-            date_str = date.strftime("%Y_%m")
-        else:
-            date_str = f"{date.year:04d}_{date.month:02d}"
-
-        output_filename = f"{landtype_name}_GPP_{date_str}.tif"
-        output_path = os.path.join(landtype_dir, output_filename)
-
-        # Save converted data as GeoTIFF
-        with rasterio.open(
-                output_path,
-                'w',
-                driver='GTiff',
-                height=converted_data.shape[0],
-                width=converted_data.shape[1],
-                count=1,
-                dtype=np.float64,
-                crs='EPSG:4326',
-                transform=transform,
-                compress='lzw',
-                nodata=np.nan
-        ) as dst:
-            dst.write(converted_data, 1)
-
-            # Enhanced metadata with converted units
-            dst.set_band_description(1, f'GPP for {landtype_name} - {date_str} ({output_units})')
-
-            # Calculate statistics for metadata
-            if len(valid_data) > 0:
-                min_val, max_val, mean_val = np.min(valid_data), np.max(valid_data), np.mean(valid_data)
-
-                dst.update_tags(
-                    1,
-                    units=output_units,
-                    original_units=input_units,
-                    conversion_factor=f"{conversion_factor}",
-                    long_name=f'Gross Primary Production - {landtype_name}',
-                    date=date_str,
-                    landtype=landtype_name,
-                    valid_pixels=str(len(valid_data)),
-                    data_min=f"{min_val:.6f}",
-                    data_max=f"{max_val:.6f}",
-                    data_mean=f"{mean_val:.6f}",
-                    data_std=f"{np.std(valid_data):.6f}",
-                    processing_note="Units converted from original NetCDF for better readability"
-                )
-
-        files_created += 1
-
-        # Print progress every 5 years
-        if i % 60 == 0:
-            print(f"  Progress: {i + 1}/{len(dates)} time steps processed...")
-
-    # Final statistics
-    if processing_stats['mean_values']:
-        overall_mean = np.mean(processing_stats['mean_values'])
-        overall_min = np.min(processing_stats['min_values'])
-        overall_max = np.max(processing_stats['max_values'])
-        mean_valid_pixels = np.mean(processing_stats['valid_pixels'])
-
-        print(f"\n📊 FINAL STATISTICS FOR {landtype_name}:")
-        print(f"   Files created: {files_created}")
-        print(f"   Value range: {overall_min:.3f} to {overall_max:.3f} {output_units}")
-        print(f"   Overall mean: {overall_mean:.3f} {output_units}")
-        print(f"   Average valid pixels per timestep: {mean_valid_pixels:.0f}")
-        print(f"   Output directory: {landtype_dir}")
-
-    return files_created
 
 
 def main():
-    # File paths
-    gpp_file = r"<DOWNLOADS>\202582212913EnsembleGPP_GL.nc"
+    print("=" * 70)
+    print("FLUXCOM GPP PROCESSING FOR CALIFORNIA LAND TYPES")
+    print("=" * 70)
 
+    # Install dependencies
+    install_dependencies()
+
+    # Paths
+    input_dir = r"<DATA_ROOT>\NEWEST GPP"
+    output_dir = r"<DATA_ROOT>\Data\FLUXCOM_GPP_California"
+
+    # Land type masks
     mask_files = {
         "Grasslands": r"<DATA_ROOT>\Data\CA_LandMasks\CA_Grasslands_2021.tif",
         "NaturalForests": r"<DATA_ROOT>\Data\CA_LandMasks\CA_NaturalForests_2021.tif",
@@ -330,259 +298,59 @@ def main():
         "Shrublands": r"<DATA_ROOT>\Data\CA_LandMasks\CA_Shrublands_2021.tif"
     }
 
-    output_dir = r"<DATA_ROOT>\Data\GPP_Clipped_Output"
-    os.makedirs(output_dir, exist_ok=True)
+    # Find NetCDF files
+    pattern = os.path.join(input_dir, "GPP_*_050_monthly.nc")
+    nc_files = glob.glob(pattern)
 
-    # UNIT SELECTION - Choose your preferred output units
-    # Common options used in scientific papers:
-    output_units_options = {
-        1: "g C m-2 day-1",  # Most common in daily GPP studies (0.1-20 range)
-        2: "kg C m-2 year-1",  # Common in annual studies (0.1-7 range)
-        3: "g C m-2 month-1",  # Monthly totals (5-600 range)
-        4: "Mg C ha-1 year-1"  # Forest literature (1-70 range, 1 Mg = 1000 kg, 1 ha = 10000 m2)
-    }
+    if not nc_files:
+        print(f"No files found matching: {pattern}")
+        return
 
-    print("=" * 80)
-    print("GPP DATA PROCESSING FOR CALIFORNIA LAND TYPES")
-    print("=" * 80)
-    print("Available output units (commonly used in scientific papers):")
-    for key, units in output_units_options.items():
-        print(f"  {key}. {units}")
+    nc_files.sort()
+    print(f"Found {len(nc_files)} files")
 
-    # Select output units (you can change this default)
-    selected_units = 1  # Change this number to select different units
-    output_units = output_units_options[selected_units]
+    # Check masks
+    print("\nChecking land type masks:")
+    valid_masks = {}
+    for name, path in mask_files.items():
+        if os.path.exists(path):
+            print(f"  ✅ {name}")
+            valid_masks[name] = path
+        else:
+            print(f"  ❌ {name}: {path}")
 
-    print(f"\n🎯 Selected output units: {output_units}")
-    print(f"   (You can change 'selected_units' variable in the code to choose different units)")
+    if not valid_masks:
+        print("No valid masks found!")
+        return
 
-    print(f"\n📄 Loading GPP NetCDF file...")
+    # Process files
+    total_files_created = 0
+    successful_years = []
 
-    # Open and examine the dataset
-    with xr.open_dataset(gpp_file, decode_times=False) as ds:
-        print(f"✅ Dataset loaded successfully")
-        print(f"   GPP data shape: {ds['gpp'].shape}")
-        print(f"   Time range: {len(ds.time)} time steps")
+    for nc_file in nc_files:
+        files_created = process_netcdf_file(nc_file, valid_masks, output_dir)
+        if files_created > 0:
+            total_files_created += files_created
+            year = int(os.path.basename(nc_file).split('_')[1])
+            successful_years.append(year)
 
-        # Check units and attributes
-        gpp_var = ds['gpp']
-        input_units = gpp_var.attrs.get('units', 'kg m-2 s-1')  # Default assumption
-        print(f"   Original units: {input_units}")
-        print(f"   Output units: {output_units}")
+    # Summary
+    print(f"\n{'=' * 70}")
+    print("PROCESSING COMPLETE")
+    print(f"{'=' * 70}")
+    print(f"Total files created: {total_files_created}")
+    print(f"Successful years: {len(successful_years)}")
 
-        # Get coordinates and time
-        lons = ds.lon.values
-        lats = ds.lat.values
-        time_values = ds.time.values
+    if successful_years:
+        print(f"Years processed: {min(successful_years)} to {max(successful_years)}")
 
-        # Convert time
-        time_units = ds.time.attrs.get('units', 'days since 1582-10-14 00:00:00')
-        time_calendar = ds.time.attrs.get('calendar', 'standard')
-        dates = convert_time_to_datetime(time_values, time_units, time_calendar)
-        print(f"   Date range: {dates[0]} to {dates[-1]}")
-
-        # Create geospatial transform
-        transform = create_geotiff_transform(lons, lats)
-
-        # Get GPP data
-        gpp_data = ds['gpp'].values
-
-        print(f"   Coordinate ranges:")
-        print(f"     Longitude: {lons.min():.3f}° to {lons.max():.3f}°")
-        print(f"     Latitude: {lats.min():.3f}° to {lats.max():.3f}°")
-
-        # Show unit conversion preview
-        sample_data = gpp_data[0]
-        valid_sample = sample_data[~np.isnan(sample_data)]
-        converted_sample, conversion_factor = convert_gpp_units(valid_sample, input_units, output_units)
-
-        print(f"\n🔄 UNIT CONVERSION PREVIEW:")
-        print(f"   Conversion factor: {conversion_factor}")
-        print(f"   Original range: {np.min(valid_sample):.2e} to {np.max(valid_sample):.2e} {input_units}")
-        print(f"   Converted range: {np.min(converted_sample):.3f} to {np.max(converted_sample):.3f} {output_units}")
-        print(f"   Original mean: {np.mean(valid_sample):.2e} {input_units}")
-        print(f"   Converted mean: {np.mean(converted_sample):.3f} {output_units}")
-
-        # Process each land type
-        total_files = 0
-        successful_landtypes = []
-
-        for landtype_name, mask_path in mask_files.items():
-            if not os.path.exists(mask_path):
-                print(f"⚠️  Warning: Mask file not found for {landtype_name}: {mask_path}")
-                continue
-
-            # Read and reproject the land type mask
-            land_mask = read_and_reproject_mask(
-                mask_path,
-                transform,
-                (len(lats), len(lons))
-            )
-
-            if np.sum(land_mask) == 0:
-                print(f"❌ ERROR: No valid pixels in {landtype_name} mask after reprojection!")
-                continue
-
-            # Process this land type with unit conversion
-            files_created = clip_gpp_data_for_landtype(
-                gpp_data,
-                land_mask,
-                dates,
-                output_dir,
-                landtype_name,
-                lons,
-                lats,
-                transform,
-                input_units,
-                output_units
-            )
-
-            if files_created > 0:
-                total_files += files_created
-                successful_landtypes.append(landtype_name)
-
-    # Final summary
-    print(f"\n{'=' * 80}")
-    print("🎉 PROCESSING COMPLETE!")
-    print(f"{'=' * 80}")
-    print(f"📁 Output directory: {output_dir}")
-    print(f"📄 Total files created: {total_files}")
-    print(f"🎯 Output units: {output_units}")
-    print(f"✅ Successful land types: {len(successful_landtypes)}")
-
-    # Expected value ranges for the selected units
-    if output_units == "g C m-2 day-1":
-        print(f"📊 Expected GPP ranges in {output_units}:")
-        print(f"   • Low productivity (deserts, tundra): 0.1-1.0")
-        print(f"   • Moderate productivity (grasslands, crops): 1.0-5.0")
-        print(f"   • High productivity (forests): 5.0-15.0")
-        print(f"   • Very high productivity (tropical forests): 10.0-20.0")
-    elif output_units == "kg C m-2 year-1":
-        print(f"📊 Expected GPP ranges in {output_units}:")
-        print(f"   • Low productivity: 0.1-0.5")
-        print(f"   • Moderate productivity: 0.5-2.0")
-        print(f"   • High productivity: 2.0-4.0")
-        print(f"   • Very high productivity: 4.0-7.0")
-    elif output_units == "Mg C ha-1 year-1":
-        print(f"📊 Expected GPP ranges in {output_units}:")
-        print(f"   • Low productivity: 1-5")
-        print(f"   • Moderate productivity: 5-20")
-        print(f"   • High productivity: 20-40")
-        print(f"   • Very high productivity: 40-70")
-
-    for landtype_name in successful_landtypes:
-        landtype_dir = os.path.join(output_dir, landtype_name)
-        if os.path.exists(landtype_dir):
-            tif_files = [f for f in os.listdir(landtype_dir) if f.endswith('.tif')]
-            print(f"   • {landtype_name}: {len(tif_files)} files")
-
-    print(f"\n💡 NOTE: Values are now in {output_units} - much more readable for scientific papers!")
-    print(f"   Original small values were correct, just in inconvenient units for interpretation.")
-    os.makedirs(output_dir, exist_ok=True)
-
-    print("=" * 80)
-    print("GPP DATA PROCESSING FOR CALIFORNIA LAND TYPES")
-    print("=" * 80)
-    print("📄 Loading GPP NetCDF file...")
-
-    # Open and examine the dataset
-    with xr.open_dataset(gpp_file, decode_times=False) as ds:
-        print(f"✅ Dataset loaded successfully")
-        print(f"   GPP data shape: {ds['gpp'].shape}")
-        print(f"   Time range: {len(ds.time)} time steps")
-
-        # Check units and attributes
-        gpp_var = ds['gpp']
-        units = gpp_var.attrs.get('units', 'unknown')
-        print(f"   Units: {units}")
-
-        # Get coordinates and time
-        lons = ds.lon.values
-        lats = ds.lat.values
-        time_values = ds.time.values
-
-        # Convert time
-        time_units = ds.time.attrs.get('units', 'days since 1582-10-14 00:00:00')
-        time_calendar = ds.time.attrs.get('calendar', 'standard')
-        dates = convert_time_to_datetime(time_values, time_units, time_calendar)
-        print(f"   Date range: {dates[0]} to {dates[-1]}")
-
-        # Create geospatial transform
-        transform = create_geotiff_transform(lons, lats)
-
-        # Get GPP data
-        gpp_data = ds['gpp'].values
-
-        print(f"   Coordinate ranges:")
-        print(f"     Longitude: {lons.min():.3f}° to {lons.max():.3f}°")
-        print(f"     Latitude: {lats.min():.3f}° to {lats.max():.3f}°")
-
-        # Global data validation
-        sample_data = gpp_data[0]
-        valid_global = sample_data[~np.isnan(sample_data)]
-        print(f"   Global GPP range: {np.min(valid_global):.2e} to {np.max(valid_global):.2e} {units}")
-        print(f"   Global GPP mean: {np.mean(valid_global):.2e} {units}")
-
-        # Process each land type
-        total_files = 0
-        successful_landtypes = []
-
-        for landtype_name, mask_path in mask_files.items():
-            if not os.path.exists(mask_path):
-                print(f"⚠️  Warning: Mask file not found for {landtype_name}: {mask_path}")
-                continue
-
-            # Read and reproject the land type mask
-            land_mask = read_and_reproject_mask(
-                mask_path,
-                transform,
-                (len(lats), len(lons))
-            )
-
-            if np.sum(land_mask) == 0:
-                print(f"❌ ERROR: No valid pixels in {landtype_name} mask after reprojection!")
-                continue
-
-            # Process this land type
-            files_created = clip_gpp_data_for_landtype(
-                gpp_data,
-                land_mask,
-                dates,
-                output_dir,
-                landtype_name,
-                lons,
-                lats,
-                transform,
-                units
-            )
-
-            if files_created > 0:
-                total_files += files_created
-                successful_landtypes.append(landtype_name)
-
-    # Final summary
-    print(f"\n{'=' * 80}")
-    print("🎉 PROCESSING COMPLETE!")
-    print(f"{'=' * 80}")
-    print(f"📁 Output directory: {output_dir}")
-    print(f"📄 Total files created: {total_files}")
-    print(f"✅ Successful land types: {len(successful_landtypes)}")
-
-    for landtype_name in successful_landtypes:
-        landtype_dir = os.path.join(output_dir, landtype_name)
-        if os.path.exists(landtype_dir):
-            tif_files = [f for f in os.listdir(landtype_dir) if f.endswith('.tif')]
-            print(f"   • {landtype_name}: {len(tif_files)} files")
-
-    print(f"\n💡 NOTE: GPP values in kg m⁻² s⁻¹ are naturally very small (1e-10 to 1e-7 range)")
-    print(f"   This is normal and expected for carbon flux data at per-second resolution!")
+        print(f"\nFiles by land type:")
+        for landtype in valid_masks.keys():
+            landtype_dir = os.path.join(output_dir, landtype)
+            if os.path.exists(landtype_dir):
+                tif_count = len([f for f in os.listdir(landtype_dir) if f.endswith('.tif')])
+                print(f"  {landtype}: {tif_count} files")
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"❌ Error occurred: {str(e)}")
-        import traceback
-
-        traceback.print_exc()
+    main()

@@ -18,6 +18,9 @@ from model_core import calculate_metrics, metric_rows
 from raster_pipeline import build_supervised, month_range, prepare_task
 from run_helpers import split_specs
 
+# Baselines involve no validation-based selection, so they use the full fold-training window
+# (refit_preprocessing_fit_end = validation_end) under both preprocessing boundaries; their results are unchanged.
+
 PIXEL_OUT = TABLES_DIR / "reviewer_safe_baseline_pixel_metrics.csv"
 MONTHLY_OUT = TABLES_DIR / "reviewer_safe_baseline_monthly_aggregated_metrics.csv"
 PREDICTION_OUT = PREDICTIONS_DIR / "reviewer_safe_baseline_predictions.csv.gz"
@@ -104,10 +107,10 @@ def sarima_monthly(prepared, spec):
     dates = prepared["dates"]
     values = prepared["processed_values"]
     aggregate = np.nanmean(values, axis=1)
-    train_mask = dates <= spec["preprocessing_fit_end"]
+    train_mask = dates <= spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"])
     train_dates = dates[train_mask]
     train_values = aggregate[train_mask]
-    full_train_dates = month_range(int(train_dates.min()), int(spec["preprocessing_fit_end"]))
+    full_train_dates = month_range(int(train_dates.min()), int(spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"])))
     lookup = dict(zip(train_dates.tolist(), train_values.tolist()))
     series = pd.Series([lookup.get(date, np.nan) for date in full_train_dates], dtype=float)
     series = series.interpolate(limit_direction="both")
@@ -125,7 +128,7 @@ def sarima_monthly(prepared, spec):
         )
         fit = model.fit(disp=False, maxiter=75)
     forecast_dates = month_range(
-        int(spec["preprocessing_fit_end"] // 100 * 100 + spec["preprocessing_fit_end"] % 100),
+        int(spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"]) // 100 * 100 + spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"]) % 100),
         int(spec["test_end"]),
     )[1:]
     forecast = fit.forecast(len(forecast_dates))
@@ -162,7 +165,7 @@ def main():
                         prepared = prepare_task(
                             land_type,
                             variable,
-                            train_end=spec["preprocessing_fit_end"],
+                            train_end=spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"]),
                             preprocessing_mode="reviewer_mode_b",
                             scaling="monthwise_z",
                         )
@@ -173,7 +176,7 @@ def main():
                             "Persistence": test["X"][:, -1].copy(),
                             "Seasonal persistence": seasonal_persistence(prepared, test),
                             "Monthly climatology": monthly_climatology(
-                                prepared, spec["preprocessing_fit_end"], test
+                                prepared, spec.get("refit_preprocessing_fit_end", spec["preprocessing_fit_end"]), test
                             ),
                         }
                         for model, predicted in predictions.items():

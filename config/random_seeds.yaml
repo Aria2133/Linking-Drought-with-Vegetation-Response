@@ -12,7 +12,7 @@ forecasting_runs:
     XGBoost: [42, 123, 2026]
     BiLSTM:
       GNDVI: [42, 123, 2026]
-      TWS: [42, 123, 2026]                  # TWS special configuration
+      TWS: [42]                             # common 12-month benchmark, used in Figure 7 (the 18-month supplementary sensitivity used 42, 123, 2026; it supplied the August-2026 Figure 7 BiLSTM-TWS cells before correction)
       other_targets: [42]
     TCN:
       GNDVI: [42, 123, 2026]
@@ -22,11 +22,11 @@ forecasting_runs:
       other_targets: [42]
     RBF-epsilon-SVR: deterministic
     baselines: deterministic
-  training_subsample: "same seed draws the training-sample cap (4000; 6000 for TWS BiLSTM) and the DataLoader shuffle"
+  training_subsample: "same seed draws the training-sample cap (4000) and the DataLoader shuffle"
 
 statistics:
   forecast_comparison_bootstrap: 20261013   # cluster bootstrap over targets, 2000 replicates
-  iaaft_state_null: 20261013                 # 1000 independent IAAFT surrogate pairs per land type
+  iaaft_state_null: 20261013                 # 500 independent EWBI/NIRv IAAFT surrogate pairs per land type
   ewbi_period_response_block_bootstrap: 42   # moving-block bootstrap, block 12 months, 2000 replicates
   severe_area_spatial_block_bootstrap: 42    # 10 x 10 pixel blocks, 2000 replicates
   gap_filling_artificial_gaps: 42            # 12 replicates x {contiguous, random 10 %} gaps

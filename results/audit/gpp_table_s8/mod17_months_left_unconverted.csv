@@ -1,0 +1,3 @@
+date,land_type,raw_value,source_path,days,converted_gC_m2_d
+2023-05-01,Natural Forests,0.2361007253312949,C:\Users\LOQ\OneDrive\Documents\Msc Water Resources Management\Thesis\Test Data\Masked_LandTypes\NaturalForests\GPP\GPP_MOD17A2H_CA_5km_2023_05_NaturalForests.tif,31,7.616152430041771
+2023-06-01,Natural Forests,0.232393674369328,C:\Users\LOQ\OneDrive\Documents\Msc Water Resources Management\Thesis\Test Data\Masked_LandTypes\NaturalForests\GPP\GPP_MOD17A2H_CA_5km_2023_06_NaturalForests.tif,30,7.746455812310933

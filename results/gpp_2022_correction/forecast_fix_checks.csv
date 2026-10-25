@@ -1,0 +1,9 @@
+check,passed
+panel a reproduced,True
+panel b reproduced,True
+Figure 7 cells reproduced from the pixel rows (all 216),True
+SVR fold 1 (never reads 2022) reproduces the accepted monthly metric,True
+pixel rows replaced = GPP folds 3-4 only,True
+only GPP Figure 7 cells change,True
+accepted S8 part b reproduced from the original predictions,True
+S8b covers 6 models x 4 land types,True

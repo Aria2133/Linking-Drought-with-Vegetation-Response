@@ -8,7 +8,18 @@ import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
 
+import candidate_config as _cfg
 from candidate_config import MAIN_LOOKBACK, MODE_A, ROLLING_FOLDS
+
+import sys as _sys
+
+_sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from fold_boundaries import LEGACY, rolling_fold_specs  # noqa: E402
+
+# Preprocessing boundary for Mode B folds; see src/forecasting/fold_boundaries.py.
+# "fit_subset" (default for new runs) fits imputation/detrending/scaling on core-training dates only.
+# "legacy_through_validation" reproduces the published runs (fit through the end of internal validation).
+PREPROCESSING_BOUNDARY = getattr(_cfg, "PREPROCESSING_BOUNDARY", LEGACY)
 from model_core import (
     MODEL_SETTINGS,
     fit_torch_model,
@@ -25,7 +36,7 @@ def previous_month(value: int, count: int = 1) -> int:
     return (absolute // 12) * 100 + (absolute % 12) + 1
 
 
-def split_specs(include_mode_b: bool, include_mode_a: bool = True) -> List[Dict]:
+def split_specs(include_mode_b: bool, include_mode_a: bool = True, boundary: str = None) -> List[Dict]:
     specs = []
     if include_mode_a:
         specs.append(
@@ -41,22 +52,7 @@ def split_specs(include_mode_b: bool, include_mode_a: bool = True) -> List[Dict]
             }
         )
     if include_mode_b:
-        for fold in ROLLING_FOLDS:
-            validation_end = fold["train_end"]
-            validation_start = previous_month(validation_end, 23)
-            specs.append(
-                {
-                    "mode": "Mode_B_rolling_origin",
-                    "fold": fold["fold"],
-                    "train_end": previous_month(validation_start, 1),
-                    "preprocessing_fit_end": fold["train_end"],
-                    "validation_start": validation_start,
-                    "validation_end": validation_end,
-                    "test_start": fold["test_start"],
-                    "test_end": fold["test_end"],
-                    "preprocessing_mode": "reviewer_mode_b",
-                }
-            )
+        specs.extend(rolling_fold_specs(ROLLING_FOLDS, boundary or PREPROCESSING_BOUNDARY))
     return specs
 
 

@@ -1,0 +1,73 @@
+land_type,quantity,dataset,start,end,n_months,n_2022_months,n_mod17_months
+Grasslands,GPP vs NIRv,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,GPP vs NIRv,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,GPP vs NDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,GPP vs NDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,GPP vs GNDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,GPP vs GNDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,GPP vs GOSIF/SIF,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,GPP vs GOSIF/SIF,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,Deseasonalized EWBI vs GPP anomaly,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,Deseasonalized EWBI vs GPP anomaly,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Grasslands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Grasslands,GPP vs NIRv,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Grasslands,GPP vs NDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Grasslands,GPP vs GNDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Grasslands,GPP vs GOSIF/SIF,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Grasslands,Deseasonalized EWBI vs GPP anomaly,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Grasslands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,GPP vs NIRv,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,GPP vs NIRv,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,GPP vs NDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,GPP vs NDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,GPP vs GNDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,GPP vs GNDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,GPP vs GOSIF/SIF,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,GPP vs GOSIF/SIF,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,Deseasonalized EWBI vs GPP anomaly,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,Deseasonalized EWBI vs GPP anomaly,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Natural Forests,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Natural Forests,GPP vs NIRv,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,GPP vs NDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,GPP vs GNDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,GPP vs GOSIF/SIF,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,Deseasonalized EWBI vs GPP anomaly,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Natural Forests,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,GPP vs NIRv,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,GPP vs NIRv,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,GPP vs NDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,GPP vs NDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,GPP vs GNDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,GPP vs GNDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,GPP vs GOSIF/SIF,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,GPP vs GOSIF/SIF,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,Deseasonalized EWBI vs GPP anomaly,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,Deseasonalized EWBI vs GPP anomaly,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Savannas,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Savannas,GPP vs NIRv,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,GPP vs NDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,GPP vs GNDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,GPP vs GOSIF/SIF,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,Deseasonalized EWBI vs GPP anomaly,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Savannas,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,GPP vs NIRv,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,GPP vs NIRv,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,GPP vs NDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,GPP vs NDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,GPP vs GNDVI,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,GPP vs GNDVI,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,GPP vs GOSIF/SIF,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,GPP vs GOSIF/SIF,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,Deseasonalized EWBI vs GPP anomaly,fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,Deseasonalized EWBI vs GPP anomaly,old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_only_2001_2021,2001-01,2021-12,252,0,0
+Shrublands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",old_stitched_2001_2024_incl_2022,2001-01,2024-12,288,12,36
+Shrublands,GPP vs NIRv,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,GPP vs NDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,GPP vs GNDVI,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,GPP vs GOSIF/SIF,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,Deseasonalized EWBI vs GPP anomaly,fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24
+Shrublands,"GPP linear trend (gC m-2 d-1 per year, HAC-12)",fluxcom_2001_2021_plus_mod17_2023_2024,2001-01,2024-12,276,0,24

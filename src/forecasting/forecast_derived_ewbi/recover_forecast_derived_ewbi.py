@@ -64,6 +64,9 @@ MODEL_ORDER = ["LSTM", "BiLSTM", "TCN", "N-BEATS", "N-HiTS", "XGBoost", "RBF-eps
 TARGET_CLIP = 4.0
 MAIN_LOOKBACK = 12
 
+# HISTORICAL PREPROCESSING BOUNDARY (kept intentionally): preprocessing is fitted through the end of the internal-
+# validation window ("legacy_through_validation", see src/forecasting/fold_boundaries.py). It must stay identical to the published runs
+# because it inverts their saved predictions back to physical units.
 FOLDS = [
     {
         "mode": "Mode_B_rolling_origin",
